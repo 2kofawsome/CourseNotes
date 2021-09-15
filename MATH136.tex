@@ -1,0 +1,1318 @@
+
+\documentclass[11pt,notitlepage]{report}
+\textwidth 15cm 
+\textheight 21.3cm
+\evensidemargin 6mm
+\oddsidemargin 6mm
+\topmargin -1.1cm
+\setlength{\parskip}{1.5ex}
+
+\usepackage{titlesec}
+    \titleformat{\chapter}{\Large\centering}{}{0pt}{}{}
+
+\usepackage{amsfonts,amsmath,amssymb,enumerate, amsthm, graphicx}
+\usepackage{enumitem}  
+\usepackage{hyperref}
+\usepackage{multicol}
+\counterwithout{section}{chapter}
+\newcommand{\bb}[1]{\ensuremath{\mathbb{#1}}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand\sbullet[1][.75]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+
+\makeatletter
+\newcommand*{\toccontents}{\@starttoc{toc}}
+\makeatother
+
+
+\begin{document}
+\parindent=0pt
+
+\title{\vspace{-15mm}MATH 136 Personal Notes \vspace{-5mm}}
+\author{by Sam Gunter}
+\date{Instructors: Ian Payne, Conrad Hewitt\\ 
+Textbook: Elementary Linear Algebra by L Spence, A.J. Insel, A.H. Friedberg\\
+Course Notes by: Conrad Hewitt\\
+$\sbullet$ Winter 2021 $\sbullet$ University of Waterloo $\sbullet$\vspace{-1mm}}
+\maketitle
+\toccontents
+
+\newpage
+\setcounter{page}{1}
+\textbf{The Invertible Matrix Theorem} Let $A \in M_{n \times n}(\bb F)$, $A$ is invertible if and only if
+\begin{multicols}{2}\begin{itemize}\setcounter{enumi}{0}
+    \item $A^{-1}$ is invertible (Def Invertibility)
+    \item $A^T$ is invertible (Lemma 13.13i)
+\end{itemize}\end{multicols}\vspace{-0.75cm}\begin{itemize}
+    \item $\forall c \ne 0 \in \bb F, cA$ is invertible (Lemma 13.13ii)
+    \item $\exists B \in M_{n \times n} (\bb F)$ such that $AB = BA = I_n$ (Lemma 14.1)
+    \item $A$ is the product of elementary matrices (Lemma 13.14)
+    \item $A\tbf x = \tbf b$ has a unique solution $\forall \tbf b \in \bb F^n$ (Lemma 13.12)
+    \item $A\tbf x = \tbf 0$ has only the trivial solution (Lemma 13.12)
+\end{itemize}\vspace{-0.5cm}\begin{multicols}{2}\begin{itemize}
+    \item $RREF(A) = I_n$ (Corollary 14.1)
+    \item $Rank(A) = n$ (Lemma 14.2)
+    \item $A$ has $n$ pivots (Def Rank)
+    \item $nullity(A) = 0$ (Corollary 13.3)
+    \item $Col(A) = \bb F^n$ (Corollary 13.1)
+    \item $dim(Row(A)) = n$ (Corollary 22.1)
+\end{itemize}\end{multicols}\vspace{-0.75cm}\begin{itemize}
+    \item $dim(Col(A)) = n$ (Lemma 13.13i, Corollary 22.1)
+    \item $N(A) = \{\tbf 0\}$ (Lemma 13.5, Lemma 13.6)
+    \item Columns of $A$ are linearly dependent (Lemma 17.5)
+    \item Columns of $A$ form a basis for $\bb F^n$ (Lemma 17.11, Lemma 17.5)
+    \item Columns of $A$ span $\bb F^n$ (Lemma 17.9)
+    \item Rows of $A$ are linearly dependent (Def Rowspace)
+    \item Rows of $A$ span $M_{1 \times n}(\bb F)$ (Def Rowspace)
+    \item $\det(A) \ne 0$ (Corollary 15.7)
+    \item $0$ is not an eigenvalue of $A$ (Corollary 16.1)
+    \item $0$ is not root of $\Delta_A$ (Def Characteristic Polynomial)
+    \item $T_A$ is an invertible linear transformation (Lemma 13.16)
+    \item $[T_A]_B$ is invertible for all basis $B$ (Lemma 16.1, Lemma 18.2)
+    \item $T_A$ is onto (Def Matrix Representation)
+    \item $T_A$ is one-to-one (Def Matrix Representation)
+\end{itemize}\vspace{-0.5cm}\begin{multicols}{2}\begin{itemize}
+    \item $N(T_A) = \{\tbf 0\}$ (Lemma 13.6)
+    \item $R(T_A) = \bb F^n$ (Def Onto)
+\end{itemize}\end{multicols}
+\newpage
+
+\section{Vectors in \texorpdfstring{$\mathbb R^n$}{Rn}}
+
+\textbf{Def} Vector: Has both magnitude and direction, notation may be \textbf{v}, $\underline{v}, \overline{v}, \overrightarrow{v}$
+$$\begin{bmatrix}1 & 2 & 3 & 4 & 5\end{bmatrix}^T = \begin{bmatrix}1\\ 2\\ 3\\ 4\\ 5\end{bmatrix}$$
+\hspace*{5mm} Note: The failure to include the $^T$ to indicate the transpose is incorrect
+
+
+\textbf{Def} Addition: For vectors $\tbf v, \tbf w \in \mathbb R^n$, their sum is $$\begin{bmatrix}v_1\\ v_2\\ \vdots\\ v_n\end{bmatrix} + \begin{bmatrix}w_1\\ w_2\\ \vdots\\ w_n\end{bmatrix} = \begin{bmatrix}v_1+w_1\\ v_2+w_2\\ \vdots\\ v_n+w_n\end{bmatrix}$$
+
+
+\textbf{Def} Zero Vector: For a vector $\in \mathbb R^n$, it is the zero vector \tbf 0 if it has the property $$\begin{bmatrix}0\\ 0\\ \vdots\\ 0\end{bmatrix}$$
+
+
+\textbf{Lemma 1}: Addition Rules. Let $\tbf v, \tbf w, \tbf z \in \mathbb R^n$
+\begin{enumerate}[label=(\roman*)]
+    \item \tbf w + \tbf v = \tbf v + \tbf w
+    \item \tbf z + \tbf v + \tbf w = \tbf z + (\tbf v + \tbf w) = (\tbf z + \tbf v) + \tbf w
+    \item \tbf v + \tbf 0 = \tbf v
+\end{enumerate}
+
+
+\textbf{Def} Subtraction: For vectors $\tbf v, \tbf w \in \mathbb R^n$, subtraction is defined by $$\tbf v - \tbf w = \tbf v + (-\tbf w)$$
+
+
+\textbf{Lemma 2}: Cancellation Identity. Let $\tbf z \in \mathbb R^n$
+$$\tbf v-\tbf v = \tbf 0$$
+\hspace*{5mm} Note: $-\tbf v$ is called the additive inverse
+
+
+\textbf{Def} Scalar Multiplication: For a vector $\tbf z \in \mathbb R^n$ and scalar $p \in \mathbb R$, scalar multiplication is defined as $$p\tbf v = \begin{bmatrix}pv_1\\ pv_2\\ \vdots\\ pv_n\end{bmatrix}$$
+
+
+\textbf{Lemma 3}: Properties of Scalar Multiplication. Let $\tbf v, \tbf w \in \mathbb R^n$, $p, q \in \mathbb R$
+\begin{enumerate}[label=(\roman*)]
+    \item (p+q)\tbf v = p\tbf v + q\tbf v
+    \item (qp)\tbf v = q(p\tbf v)
+    \item p(\tbf v+\tbf w) = p\tbf v + p\tbf w
+    \item 0\tbf v= \tbf 0
+\end{enumerate}
+
+
+\textbf{Lemma 4}: Properties of Zero. Let $\tbf v \in \mathbb R^n$, $a \in \mathbb R$
+$$a\tbf v = 0 \quad \Longrightarrow \quad a = 0 \vee \tbf v = \tbf 0$$
+
+\section{Dot Product}
+
+\textbf{Def} Dot Product: $$
+\begin{bmatrix}
+v_1\\v_2\\ \vdots\\ v_n
+\end{bmatrix} 
+\bullet  
+\begin{bmatrix} 0 0 -3 8
+w_1\\w_2\\ \vdots\\ w_n
+\end{bmatrix}
+= v_1w_1 + v_2w_2 + \cdots + v_nw_n$$
+
+
+\textbf{Lemma 1}: Properties of the dot product. Let $\tbf v, \tbf w, \tbf z \in \mathbb R^n$, $a \in \mathbb R$
+\begin{enumerate}[label=(\roman*)]
+    \item Symmetry: $\tbf v \bullet \tbf w = \tbf w \bullet \tbf v$
+    \item Linearity: $(\tbf v + \tbf w) \bullet \tbf z = \tbf v \bullet \tbf z + \tbf w \bullet \tbf z$
+    \item Linearity: $(a\tbf w) \bullet \tbf v = a(\tbf w \bullet \tbf v)$
+    \item Non-negativity: $\tbf v \bullet \tbf v >= 0 \quad \text{thus} \quad \tbf v \bullet \tbf v = 0 \Longleftrightarrow \tbf v = \tbf 0$
+\end{enumerate}
+
+
+\textbf{Def} Norm (Length): of $\tbf v \in \mathbb R^n$ is 
+$$\lVert \tbf v \rVert = \sqrt{\tbf v \bullet \tbf v}$$
+
+
+\textbf{Lemma 2}: Let $\tbf v \in \mathbb R^n$, $a \in \mathbb R$
+$$\lVert a\tbf v \rVert = |a| \lVert \tbf v \rVert$$
+
+
+\textbf{Def} Unit Vector: $\tbf v \in \mathbb R^n$ is a unit vector if 
+$$\lVert \tbf v \rVert = 1$$
+
+
+\textbf{Def} Normalization: For a $\tbf z \in \mathbb R^n$, produce a unit vector in the direction of $\tbf z$ ($\hat{\tbf z}$) by scaling it.
+$$\hat{\tbf z} = \frac{\tbf z}{\lVert \tbf z \rVert}$$
+
+
+\textbf{Def} Orthogonal: The vectors $\tbf v, \tbf w \in \mathbb R^n$ are orthogonal if $\tbf v \bullet \tbf w = 0$,\\
+\hspace*{5mm} Note: $\tbf v, \tbf 0$ are always orthogonal as $\tbf v \bullet \tbf 0 = 0$
+
+
+\textbf{Def} Angle: The angle $\theta$ between vectors $\tbf v, \tbf w \in \mathbb R^n$ is $$\tbf v \bullet \tbf w = \lVert \tbf v \rVert \lVert \tbf w \rVert \cos{\theta} \quad \text{or} \quad \theta = \arccos\left(\frac{\tbf v \bullet \tbf w}{\lVert \tbf v \rVert \lVert \tbf w \rVert}\right)$$
+
+
+\textbf{Def} Projection: For vectors $\tbf v, \tbf w \in \mathbb R^n$ where $\tbf w \ne \tbf 0$, the projection of $\tbf v$ along $\tbf w$, or the projection of $\tbf v$ in the $\tbf w$ direction is 
+$$Proj_\tbf w(\tbf v) = \tbf w\frac{\tbf v \bullet \tbf w}{\lVert \tbf w \rVert^2} \quad \text{or} \quad Proj_\tbf w(\tbf v) = (\tbf v \bullet \hat{\tbf w}) \hat{\tbf w} \quad \text{or} \quad Proj_\tbf w(\tbf v) = \hat{\tbf w}(\lVert \tbf v \rVert \cos{\theta})$$
+
+
+\textbf{Def} Component: For vectors $\tbf v, \tbf w \in \mathbb R^n$ where $\tbf w \ne \tbf 0$, the component of $\tbf v$ along $\tbf w$, or the scalar component of $\tbf v$ in the $\tbf w$ direction is 
+$$Comp_\tbf w(\tbf v) =\lVert \tbf v \rVert \cos{\theta}$$
+
+
+\textbf{Def} Remainder: For vectors $\tbf v, \tbf w \in \mathbb R^n$ where $w \ne 0$, the remainder $r$ is 
+$$Perp_\tbf w(\tbf v) = \tbf v - Proj_\tbf w(\tbf v)$$
+
+
+\textbf{Lemma 3}: Let $\tbf v, \tbf w, \tbf z \in \mathbb R^n$, $a \in \mathbb R$\\
+\hspace*{5mm} The projection of a vector $\tbf v$ along $\tbf w$ and the remainder are orthogonal to each other
+
+\newpage
+
+
+\section{Inner Product on \texorpdfstring{$\mathbb C^n$}{Cn}}
+
+
+\textbf{Def} Standard Inner Product on $\mathbb C^n$: For vectors $\tbf w, \tbf z \in \mathbb C^n$, the standard inner product is 
+$$\langle \tbf w,\tbf z\rangle = w_1\overline{z}_1 + w_2\overline{z}_2 + \cdots + w_n\overline{z}_n$$
+
+
+\textbf{Lemma 1}: Properties of the standard inner product. Let $\tbf v, \tbf w, \tbf z \in \mathbb C^n$, $a \in \mathbb C$
+\begin{enumerate}[label=(\roman*)]
+    \item Conjugate Symmetry: $\langle \tbf v,\tbf w\rangle = \overline{\langle \tbf w,\tbf v\rangle}$
+    \item Linearity: $\langle (\tbf v + \tbf w),\tbf z\rangle = \langle \tbf v,\tbf z\rangle + \langle \tbf w,\tbf z\rangle$
+    \item Linearity: $\langle a\tbf v,\tbf w\rangle = a\langle \tbf v,\tbf w\rangle$
+    \item Non-negativity: $\langle \tbf v,\tbf v\rangle >= 0 \quad \text{thus} \quad \langle \tbf v,\tbf v\rangle = 0 \Longleftrightarrow \tbf v = \textbf{0}$
+\end{enumerate}
+
+
+\textbf{Def} Length: of $\tbf v \in \mathbb C^n$ is 
+$$\lVert \tbf v \rVert = \sqrt{\langle \textbf{v}, \textbf{v}\rangle}$$
+
+
+\textbf{Lemma 2}: Properties of the length. Let $\tbf v \in \mathbb C^n$, $c \in \mathbb C$
+\begin{enumerate}[label=(\roman*)]
+    \item $\lVert c\tbf v \rVert = |c| \lVert \tbf v \rVert$
+    \item $\lVert c\tbf v \rVert >= 0 \quad \text{thus} \quad \lVert \tbf v \rVert = 0 \Longleftrightarrow \tbf v = \tbf 0$
+\end{enumerate}
+
+
+\textbf{Def} Orthogonality in $\mathbb C^n$: The vectors $\tbf v, \tbf w \in \mathbb C^n$ are orthogonal if 
+$$\langle \tbf v,\tbf w\rangle = 0$$
+
+
+\textbf{Def} Projection in $\mathbb C^n$: For vectors $\tbf v, \tbf w \in \mathbb C^n$, the projection of $\tbf v$ in the $\tbf w$ direction is defined as
+$$Proj_\tbf w(\tbf v) = \tbf w\frac{\langle \tbf v,\tbf w\rangle}{\lVert \tbf w \rVert^2} \quad \text{or} \quad Proj_\tbf w(\tbf v) = \langle \tbf v,\hat{\tbf w}\rangle \hat{\tbf w}$$
+
+
+\textbf{Def} Field: The field $\mathbb F$ can cause different solutions to an equation depending on if $\mathbb F = \mathbb R$ or $\mathbb F = \mathbb C$
+
+
+\textbf{Def} Standard Inner Product on $\mathbb F^n$: For vectors $\tbf v, \tbf w \in \mathbb F^n$, the standard inner product is 
+$$\langle \tbf w,\tbf z\rangle = w_1\overline{z}_1 + w_2\overline{z}_2 + \cdots + w_n\overline{z}_n$$
+\hspace*{5mm}Note: if $\mathbb F = \mathbb R$, this is the dot product on $\mathbb R^n$\\
+\hspace*{5mm}Note: if $\mathbb F = \mathbb C$, this is the Standard Inner Product on $\mathbb C^n$
+
+
+
+
+\section{The Cross Product}
+
+
+\textbf{Def} Cross Product: For vectors $\tbf u, \tbf v \in \mathbb R^3$,
+$$\tbf u \times \tbf v = \begin{bmatrix}
+u_2v_3-u_3v_2\\
+-(u_1v_3-u_3v_1)\\
+u_1v_2-u_2v_1
+\end{bmatrix}$$
+\hspace*{5mm} Note: Defined  only in $\bb R^3$
+
+\textbf{Lemma 1}: Properties of the cross product. Let $\tbf u, \tbf v \in \mathbb R^3$, with $\tbf z = \tbf u \times \tbf v$
+\begin{enumerate}[label=(\roman*)]
+    \item \tbf z is orthogonal to \tbf u and \tbf v, thus $\tbf z \bullet \tbf u = 0$ and $\tbf z \bullet \tbf v = 0$
+    \item Skew-symmetric: $\tbf v \times \tbf u = - \tbf z = - (\tbf u \times \tbf v)$
+    \item The length of \tbf z is $\lVert \tbf z \rVert = \lVert \tbf u \rVert \lVert \tbf v \rVert \sin(\theta)$
+    \item Right-hand Rule: If the pointer finger of your right hand points in the direction of \tbf u, and the middle finger of your right hand points in the direction of \tbf v, then your thumb points in the direction of \tbf z:
+\end{enumerate}
+
+\textbf{Lemma 2}: Linearity of the cross product. Let $\tbf x, \tbf y, \tbf z \in \bb R^3, a \in \bb R$, them cross product is linear in both arguments.
+$$\text{First argument:   }\begin{cases}
+    (\tbf x + \tbf z) \times \tbf y = (\tbf x \times \tbf y) + (\tbf z \times \tbf y)\\
+    a\tbf x \times \tbf y = a(\tbf x \times \tbf y)
+\end{cases}$$
+$$\text{Second argument:   }\begin{cases}
+    (\tbf x \times (\tbf z + \tbf y) = (\tbf x \times \tbf z) + (\tbf x \times \tbf y)\\
+    \tbf x \times a\tbf y = a(\tbf x \times \tbf y)
+\end{cases}$$
+
+\section{An Introduction to Linear Combinations and Span}
+
+\textbf{Def} Linear Combination: For vectors $\tbf v, \tbf w \in \mathbb F^n$, and scalars $a, b \in \bb F$. A linear combination is of the form
+$$a\tbf v + b \tbf w$$
+\hspace*{5mm} Note: $0 \tbf v + 0 \tbf w = \tbf 0$ is always a linear combination of $\tbf v, \tbf w$\\
+\hspace*{5mm} Note: Linear Combinations can be extended to an arbitrary number of vectors in $\bb F^n$
+
+\textbf{Def} Span: For vectors $\tbf v_1, \tbf v_2, \dots, \tbf v_p \in \mathbb F^n$. The span of the vectors is the set of all linear combination of the vectors
+$$\operatorname{Span}(\{\tbf v_1, \tbf v_2, \dots, \tbf v_p\}) = \{a_1\tbf v_1 + a_2\tbf v_2 + \dots + a_p\tbf v_p: a_1, a_2, \dots, a_p \in \bb F\}$$
+
+
+
+\newpage
+
+\section{Lines and Planes in \texorpdfstring{$\mathbb R^n$}{Rn}}
+
+There are 4 ways to create an equation of a straight line in $\bb R^n$
+\begin{enumerate}
+    \item Slope ($m$) and $y$-intercept ($b$) $$y = mx+b$$
+    \item A point ($x_1, y_1$) and slope ($m$) $$y - y_1 = m(x-x_1)$$
+    \item Two points ($x_1, y_1$), ($x_2, y_2$) $$\frac{y-y_2}{y_2-y_1} = \frac{x-x_1}{x_2-x_1}$$
+    \item A point ($x_1, y_1$), slope ($\frac{q}{p}$, $p\ne 0$) and a parameter ($t$) $$x = x_1 + pt \text{ and } y = y_1 + qt$$
+\end{enumerate}
+
+\textbf{Def} Parametric equations of a line in $\bb R^2$: For constants $p, q$, as $t$ changes the point on the line shifts to all real numbers
+$$x = x_1 + pt \text{ and } y = y_1 + qt, \text{ for } t \in \bb R$$
+\hspace*{5mm} Note: If $p=0$, then the line is vertical
+
+
+\textbf{Def} Vector equation of a line in $\bb R^2$: The terminal point of the vector gives the coordinates for points on the line ($x_1 + tp, y_1 + tq$)
+$$x = \begin{bmatrix}x\\y\end{bmatrix} = \begin{bmatrix}x_1\\y_2\end{bmatrix} + t \begin{bmatrix}p\\q\end{bmatrix} = \tbf v + t \tbf w \text{ for } t \in \bb R$$
+\hspace*{5mm} Note: \tbf w is parallel to the line, but is a point on the line iff \tbf v is a multiple of \tbf w
+
+
+
+\textbf{Def} Vector equation of a line in $\bb R^n$: For vectors $\tbf v, \tbf w \in \bb R^n, \tbf w \ne \tbf 0$, the line through \tbf v with direction \tbf w is
+$$L = \{\tbf v + t \tbf w: t \in \bb R\}$$
+\hspace*{5mm} Note: The are many other vectors which can produce the same line from a different $\tbf v$
+
+\textbf{Def} Parametric equations of a line in $\bb R^n$: Given an equation of a line in $\bb R^n$ in vector form, the parametric form of the equation is
+$$\begin{cases} x = v_1 + tw_1\\ y = v_2 + tw_2\\ \vdots\\ z = v_n + tw_n
+\end{cases}$$
+
+\textbf{Def} Line in $\bb R^n$: For vectors $\tbf v, \tbf w \in \bb R^n, \tbf w \ne \tbf 0$, the $L$ is a set of vectors with associated terminal points
+$$L = \{\tbf v + t \tbf w : t \in \bb R\}$$
+
+
+\textbf{Def} Line through the Origin in $\bb R^n$ with Span: For vector $\tbf w \in \bb R^n, \tbf w \ne \tbf 0$, the line through the Origin with direction \tbf w is
+$$\operatorname{Span}(\{\tbf w\}) = \{\tbf 0 + t \tbf w: t \in \bb R\}$$
+\hspace*{5mm} Note: The line is unique, but it can be created in other ways
+
+
+\textbf{Def} Plane through the Origin in $\bb R^n$: For vectors $\tbf v, \tbf w \in \bb R^n, \tbf v, \tbf w \ne \tbf 0, \tbf w \ne m\tbf v$, the plane through the Origin is defined as
+$$P = \operatorname{Span}(\{\tbf v, \tbf w\}) = \{s \tbf v + t \tbf w: s, t \in \bb R\}$$
+
+\textbf{Def} Vector equation of a plane in $\bb R^n$: For vectors $\tbf v, \tbf w \in \bb R^n, \tbf v, \tbf w \ne \tbf 0, \tbf w \ne m\tbf v, s, t \in \bb R$, any vector with a terminal point on the plane has the form
+$$\tbf x = s \tbf v + t \tbf w$$
+\hspace*{5mm} Note: The vectors \tbf v, \tbf w are tangent to the plane
+
+\textbf{Def} Plane in $\bb R^n$: For vectors $\tbf p, \tbf v, \tbf w \in \bb R^n, \tbf v, \tbf w \ne \tbf 0, \tbf w \ne m\tbf v$, a plane is defined as
+$$P = \{\tbf p + s \tbf v + t \tbf w: s, t \in \bb R\}$$
+\hspace*{5mm} Note: This is not a Span\\
+\hspace*{5mm} Note: \tbf v and \tbf w are on the line iff $\tbf p \in \operatorname{Span}(\{\tbf v, \tbf w\})$
+
+\textbf{Technique} Given vectors \tbf p, \tbf q, \tbf r. A unique plane with these three points can be created by using the fact that $\tbf v = \tbf q - \tbf p$ and $\tbf w = \tbf r - \tbf p$ will always be tangential to the plane
+$$\prod = \{\tbf p + s(\tbf q - \tbf p) + t(\tbf r - \tbf p): s, t \in \bb R\}$$
+
+\textbf{Def} Scalar equation of a plane in $\bb R^3$: For vectors $\tbf p, \tbf v, \tbf w \in \bb R^3, \tbf v, \tbf w \ne \tbf 0, \tbf w \ne m\tbf v$, the scalar equation of the plane passing through \tbf p with \tbf v and \tbf w tangential to it is
+$$\tbf n \bullet (\tbf x - \tbf p) = (\tbf v \times \tbf w) \bullet (\tbf x - \tbf p) = 0$$
+\hspace*{5mm} Note: The plane goes through the origin iff the vector \tbf 0 satisfies this equation for \tbf x
+
+
+\section{Systems of Linear Equations}
+
+\textbf{Def} Linear Equation: Each unknown $x_!, x_2, \dots x_n$ is either to the exponent 0 or 1
+
+\textbf{Def} Linear System of $m$ Equations with $n$ unknowns: 
+$\begin{cases}
+a_{11}x_1 + x_{12}x_2 + \dots + a_{1n}x_n &= b_1\\
+a_{21}x_1 + x_{22}x_2 + \dots + a_{2n}x_n &= b_2\\
+\vdots\\
+a_{m1}x_1 + x_{m2}x_2 + \dots + a_{mn}x_n &= b_m\\
+\end{cases}$
+\hspace*{5mm} Note: The scalars $a_{ij} \in \bb F$ are known cofficients\\
+\hspace*{5mm} Note: The variables $x_1, x_2, \dots x_{n} \in \bb F$ are unknowns\\
+\hspace*{5mm} Note: The variables $b_1, b_2, \dots b_{m} \in \bb F$ are collectively the right-hand side\\
+
+\textbf{Def} Solution Set: The scalars $y_1, y_2, \dots y_{n} \in \bb F$ solve the equations if $x_i = y_i$ satisfies\\
+$$\tbf x = \begin{bmatrix}
+y_1\\y_2\\ \vdots\\y_n
+\end{bmatrix}$$
+\hspace*{5mm} Note: The solution set is the set of all solutions
+
+\textbf{Theorem 1} The solution set to a system of linear equations is either empty, contains 1 element, or contains infinite elements
+
+\textbf{Def} Inconsistent and Consistent Systems: If a solution set is empty, the system is inconsistent, if the solution set is non-empty, it is consistent\\
+\hspace*{5mm} Note: $0 = a$ where $a \ne 0$ is always inconsistent
+
+\textbf{Def} Equivalent systems: Two linear systems are equivalent if they have the same solution set
+
+\textbf{Def} Elementary Operations: Basic operations that can be performed on linear systems to produce an equivalent system
+\begin{enumerate}[label=Type \Roman*:]
+    \item Interchange two equations
+    \item Multiply one equation by a non-zero scalar
+    \item Add one equation to the multiple of another equation
+\end{enumerate}
+\hspace*{5mm} Note: Combinations of elementary operations are valid, but will not be used in this course
+
+\textbf{Def} Trivial equation: The equation $0 = 0$ is always true and means nothing
+
+\newpage
+\textbf{Def} Gaussian Elimination: 
+\begin{itemize}
+    \item Forward elimination: Create an equivalent solution with each first $x_i$ having scalar 1
+    \item Back substitution: Setting the above $x_i$s to 0 with lowest $x_i$
+    \item Backward elimination: Setting them all to scalar $1$?.
+\end{itemize}
+
+\textbf{Def} Free variable: An unknown is a free variable when it can be assigned any real value in the solution set
+
+\textbf{Def} Basic variable: An unknown is a basic variable if not a free variable
+
+\section{Gauss-Jordan}
+
+\textbf{Def} Coefficient Matrix: A linear system of equation can be represented by a matrix of its coefficients
+$$\begin{bmatrix}
+a_{11} & a_{11} & \dots & a_{1n}\\
+a_{21} & a_{22} & \dots & a_{2n}\\
+\vdots\\
+a_{m1} & a_{m2} & \dots & a_{mn}\\
+\end{bmatrix}$$
+\hspace*{5mm} Note: The $(i, j)^{th}$ entry of the matrix or $c_{ij}$, is row $i$, column $j$
+
+\textbf{Def} Augmented Matrix: The coefficient matrix including the values of $b$, $B = (A \mid \tbf b)$
+$$\begin{bmatrix}
+a_{11} & a_{11} & \dots & a_{1n} & \mid &b_1\\
+a_{21} & a_{22} & \dots & a_{2n} & \mid &b_2\\
+\vdots\\
+a_{m1} & a_{m2} & \dots & a_{mn} & \mid &b_m\\
+\end{bmatrix}$$
+
+\textbf{Def} Zero Row: A row where all its entries are zeros, thus $0 = 0$\\
+\hspace*{5mm} Note: If the coefficient matrix has less zero rows than an augmented matrix, the system of equations is inconsistent
+
+
+
+\textbf{Def} Leading Entry: The first non-zero entry in a row
+\hspace*{5mm} Note: Leading 1 is a leading entry that has been scaled to 1
+
+\textbf{Def} Leading Variable: The variable located at the leading entry position $x_k$
+
+\textbf{Def} Pivot Column: The $j$ column of a position of a leading entry
+
+\textbf{Def} Pivot Position: The $(i, j)$ position of a leading entry
+
+\textbf{Def} Pivot: The Pivot Position if it is non-zero
+
+\newpage
+
+\textbf{Technique} Gauss Procedure: 
+\begin{itemize}
+    \item Isolate a row with a non-zero tern in its first column, and Type I to first row
+    \item Use Type III to reduce the $i$ position of all lower rows to 0
+    \item Repeat
+\end{itemize}
+
+\textbf{Def} Row Echelon Form: The $REF(A)$ matrix is created after Gauss Procedure is completed, of the form
+$$\begin{bmatrix}
+a_{11} & a_{11} & \dots & a_{1n} & \mid &b_1\\
+0 & a_{22} & \dots & a_{2n} & \mid &b_2\\
+\vdots\\
+0 & 0 & \dots & a_{mn} & \mid &b_m\\
+\end{bmatrix}$$
+
+\textbf{Technique} Jordan Procedure: 
+\begin{itemize}
+    \item Scale bottom pivot row to have pivot position 1 with Type II
+    \item Use Type III to reduce the $i$ position of all higher rows to 0
+    \item Repeat
+\end{itemize}
+\hspace*{5mm} Note: Called backward-elimination
+
+\textbf{Def} Reduced Row Echelon Form: The $RREF(A)$ matrix is created after Jordan Procedure is completed, of the form
+$$\begin{bmatrix}
+1 & 0 & a_{13} & \dots & 0 & \mid &b_1\\
+0 & 1 & a_{23} & \dots & 0 & \mid &b_2\\
+0 & 0 & 0 & \dots & 0 & \mid &b_3\\
+\vdots\\
+0 & 0 & 0 & \dots & 1 & \mid &b_m\\
+\end{bmatrix}$$
+
+\textbf{Lemma 1} If $A$ is a matrix, then there is a unique $RREF(A)$
+
+
+\textbf{Technique} Canonical  Gauss-Jordan: 
+\begin{itemize}
+    \item Isolate the first row with a non-zero tern in its first column, and Type I to first row
+    \item Scale bottom pivot row to have pivot position 1 with Type II
+    \item Use Type III to reduce the $i$ position of all lower rows to 0
+    \item Repeat
+    \item Repeat: Use Type III to reduce the $i$ position of all higher rows to 0
+\end{itemize}
+
+\newpage
+
+\section{Systems of Linear Equations}
+
+\textbf{Def} Notation: The set of matrices with $p$ rows and $q$ columns is $M_{p \times q}(\bb R), M_{p \times q}(\bb C), M_{p \times q} $
+
+\textbf{Def} Rank: The number of pivots when a matrix $A$ is in RREF
+$$rank(A) \leq p \text{ and } rank(A) \leq q$$
+\hspace*{5mm} Note: If $rank(A) = p$, then $rank(A) = rank(A\mid \tbf b)$ is consistent
+
+\textbf{Lemma 1} The system of linear equations is consistent iff $rank(A) = rank(A \mid \tbf b)$
+
+\textbf{Def} Nullity: The nullity of a matrix $A$ is
+$$nullity(A) = q - rank(A)$$
+
+\textbf{Lemma 2} If the system of linear equations is consistent, then the solution set contains $nullity(A)$ parameters
+
+\section{Real and Complex Examples}
+
+\textbf{Def} Homogeneous System: A system is homogeneous if in the augmented matrix $\tbf b = 0$
+\hspace*{5mm} Note: A homogeneous system is always consistent as the trivial solution is always satisfied $A\tbf 0 = \tbf 0$
+
+\textbf{Def} Null Space: The nullspace of a matrix $A$, is the solution set of the matrix denoted by $N(A)$\\
+\hspace*{5mm} Note: The nullspace of a homogeneous system is a span
+
+
+\section{Matrix Multiplication}
+
+\textbf{Def} Row Vector: The vector $\tbf G \in M_{1\times n}$ is a row, distinguished from column vectors by capitalization\\
+\hspace*{5mm} Note: $\tbf G_j$ is the entry in the $j^{th}$ column
+
+\textbf{Def} Decomposition of a Matrix: 
+$$\begin{bmatrix}
+a_{11} & a_{11} & \dots & a_{1n}\\
+a_{21} & a_{22} & \dots & a_{2n}\\
+\vdots\\
+a_{m1} & a_{m2} & \dots & a_{mn}\\
+\end{bmatrix} = \begin{bmatrix}
+\tbf A^1\\
+\tbf A^2\\
+\vdots\\
+\tbf A^m\\
+\end{bmatrix} = \begin{bmatrix}
+\tbf a_{1} & \tbf a_{2} & \dots & \tbf a_{n}\\
+\end{bmatrix}$$
+
+\textbf{Def} Matrix Multiplication: Let $A \in M_{m\times n}, \tbf x \in \bb F^n$, then $A\tbf x =$
+$$\begin{bmatrix}
+a_{11} & a_{11} & \dots & a_{1n}\\
+a_{21} & a_{22} & \dots & a_{2n}\\
+\vdots\\
+a_{m1} & a_{m2} & \dots & a_{mn}\\
+\end{bmatrix}\begin{bmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n\\
+\end{bmatrix} = \begin{bmatrix}
+\tbf a_{1} & \tbf a_{2} & \dots & \tbf a_{n}\end{bmatrix}\tbf x = \begin{bmatrix}
+a_{11}x_1 + a_{11}x_2 + \dots + a_{1n}x_n\\
+a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n\\
+\vdots\\
+a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n\\
+\end{bmatrix} = \begin{bmatrix}
+\tbf A^1\\
+\tbf A^2\\
+\vdots\\
+\tbf A^m\\
+\end{bmatrix}\tbf x$$
+
+
+\textbf{Lemma 1} Linearity of Matrix Multiplication: Let $A \in M_{m \times n}$ and $\tbf x, \tbf y \in \bb F^n$, then
+$$\begin{cases}
+A(\tbf x + \tbf y) &= A\tbf x + A\tbf y\\
+A(c\tbf x) &=  cA \tbf x
+\end{cases}$$
+
+\textbf{Remark: }for $A \in M_{m \times n}, \tbf w \in \bb F^n$,
+$$(A\tbf w)_i = \langle (\tbf A^i)^T, \overline{\tbf{w}} \rangle$$
+thus if $A \in M_{m \times n}(\bb R)$ then
+$$(A\tbf w)_i = (\tbf A^i)^T \bullet \tbf w$$
+
+
+
+\textbf{Def} Associated Homogeneous System: For an inhomogeneous system $C\tbf x = \tbf d \ne \tbf 0$, the associated homogeneous system is $D\tbf x = \tbf 0$
+
+\textbf{Lemma 2} If $\tbf x_1, \tbf x_2 \in S, a_1 \in \bb F$, then $(\tbf x_1 + \tbf x_2) \in S$ and $a_1\tbf x_1 \in S$
+
+\textbf{Lemma 3} Relation between $\tilde S$ and $S$ I: If $\tbf y_1, \tbf y_2 \in$ an inhomogeneous system $\tilde S$, then $(\tbf y_1 - \tbf y_2) \in $ the associated homogeneous system $S$
+
+\textbf{Def} Particular Solution: A particular solution to $A\tbf x = \tbf b$ is referred to as $\tbf x_p$
+
+\textbf{Lemma 4} Relation between $\tilde S$ and $S$ II: The solution set of an inhomogeneous system $\tilde S$ can be constructed from the associated homogeneous system $S$ and a single particular solution
+$$\tilde S = \{\tbf y_p + \tbf x: \tbf x \in S\}$$
+
+
+\textbf{Lemma 5} Relation Between Inhomogeneous Systems with Matching Coefficient Matrices: Let $\tilde S_1$ be the solution set to $A\tbf x = \tbf b$ and $\tilde S_2$ be the solution set to $A\tbf x = \tbf c$. Then
+$$\tilde S_2 = \{\tbf p_2 + (\tbf z - \tbf p _1) : \tbf z \in \tilde S_1\}$$
+that is if 
+$$\tilde S_1 = \{\tbf p_1 + a_1\tbf w_1 + \dots + a_q\tbf w_q: a_1, a_2, \dots, a_1 \in \bb F\}$$
+then
+$$\tilde S_2 = \{\tbf p_2 + a_1\tbf w_1 + \dots + a_q\tbf w_q: a_1, a_2, \dots, a_1 \in \bb F\}$$
+
+
+\textbf{Def} Matrix Multiplication: Let $A \in M_{m \times n}, B \in M_{n \times p}$, then
+$$AB = C = A\begin{bmatrix}
+\tbf b_1 & \tbf b_2 & \dots & \tbf b_p
+\end{bmatrix}$$
+where $C \in M_{m \times p}$\\
+\hspace*{5mm} Note: The $j^{th}$ column of $C$, $\tbf c_j = A \tbf b_j$\\
+\hspace*{5mm} Note: The $(i, j)^{th}$ entry of $C$ is $\tbf A^i\tbf b_j$
+
+\textbf{Def} Column Span: The span of the columns of $A$
+$$Col(A) = Span(\{\tbf a_1, \tbf a_2, \dots, \tbf a_n\}) = \{\alpha_1\tbf a_1 + \alpha_2 \tbf a_2 + \dots + \alpha_n \tbf a_n : \alpha_1, \dots, \alpha_n \in \bb F\}$$
+\hspace*{5mm} Note: If $C = AB$, then $\tbf c_k \in Col(A)$ for $k = 1, \dots, p$
+
+
+\textbf{Lemma 6} Solution of a linear system: The system of linear equations $A \tbf x = \tbf b$ has a solution if and only if $\tbf b \in Col(A)$
+
+
+
+\section{Properties of Matrices}
+
+\textbf{Def} Equality: Let $A \in M_{m \times n}, B \in M_{p \times q}$, $A$ and $B$ are equal means that
+\begin{enumerate}[label=(\roman*)]
+    \item $m = p$ and $n = q$ (same size)
+    \item $a_{ij} = b_{ij}$ for all $i = 1, 2, \dots, m$ and $j = 1, 2, \dots n$ (entries are equal)
+\end{enumerate}
+\hspace*{5mm} Note: Holds for $\bb R^n$ and $\bb C^n$
+
+\textbf{Def} Addition: Let $A, B \in M_{m \times n}$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $A + B = D \in M_{m \times n}$
+    \item $d_{ij} = a_{ij} + b_{ij}$ for all $i = 1, 2, \dots, m$ and $j = 1, 2, \dots n$
+\end{enumerate}
+\hspace*{5mm} Note: Addition of different sizes is not defined
+
+\textbf{Lemma 1} Properties of Matrix Addition: Let $A, B, C \in M_{m \times n}$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $A + B = B + A$
+    \item $A + B + C = (A + B) + C = A + (B + C)$
+    \item $\exists \bb O \in M_{m \times n}, \bb O + A = A$
+    \item $-A + A = \bb O$
+\end{enumerate}
+\hspace*{5mm} Note: The Zero Matrix is defined as $\bb O$, and sometimes includes size $\bb O_{m \times n}$
+
+\newpage
+\textbf{Def} Multiplication by a Scalar: Let $A \in M_{m \times n}, c \in \bb F$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $cA = F \in M_{m \times n}$
+    \item $f_{ij} = ca_{ij}$ for all $i = 1, 2, \dots, m$ and $j = 1, 2, \dots n$
+\end{enumerate}
+
+\textbf{Lemma 2} Properties of Matrix  Multiplication by a Scalar: Let $A, B \in M_{m \times n}, C \in M_{n \times p}, c, d \in \bb F$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $cA = Ac$
+    \item $c(A+B)=cA+cB$
+    \item $(c+d)A = cA + dA$
+    \item $c(dA) = (cd)A$
+    \item $c(AC) = (cA)C = A(cC) = cAC$
+\end{enumerate}
+
+\textbf{Def} Transpose of a Matrix: Let $A \in M_{m \times n}$, then the transpose is
+$$(A^T)_{mn} = (A)_{nm}$$
+\hspace*{5mm} Note: The rows are made into columns i nthe order in which they appear
+
+\textbf{Lemma 3} Properties of Transpose: Let $A, B \in M_{m \times n}, c \in \bb F$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $(A+B)^T = A^T+B^T$
+    \item $(cA)^T=cA^T$
+    \item $(A^T)^T = A$
+\end{enumerate}
+
+\textbf{Lemma 4} Properties of Matrix Multiplication: Let $A, G \in M_{m \times n}, B, D \in M_{n \times p}, C \in M_{p \times q}$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $(A+G)B = AB + GB$
+    \item $A(B+D) = AB + AD$
+    \item $(AB)C = A(BC) = ABC$
+    \item $(AB)^T = B^TA^T$
+\end{enumerate}
+
+\textbf{Def} Square Matrix: Let $A \in M_{m \times n}$, then $A$ is a square matrix iff $n = m$
+
+\textbf{Def} Symmetric: Let $A \in M_{n \times n}$, then $B$ is a symmetric iff $A = A^T$
+
+\textbf{Def} Skew-symmetric: Let $A \in M_{n \times n}$, then $A$ is a skew-symmetric iff $A = -A^T$
+
+\textbf{Def} Upper Triangular: Let $A \in M_{n \times n}$, then $A$ is a upper triangular ($U\Delta$) iff $a_{ij} = 0$ for all $i = 1, 2, \dots, n$ and $j = 1, 2, \dots n$ where $i > j$\\
+\hspace*{5mm} Note: The product of $U\Delta$ matrices is $U\Delta$
+
+*example
+
+\textbf{Def} Lower Triangular: Let $A \in M_{n \times n}$, then $A$ is a lower triangular ($L\Delta$) iff $a_{ij} = 0$ for all $i = 1, 2, \dots, n$ and $j = 1, 2, \dots n$ where $i < j$\\
+\hspace*{5mm} Note: The transpose of $U\Delta$ is $L\Delta$\\
+\hspace*{5mm} Note: The product of $L\Delta$ matrices is $L\Delta$
+
+*example
+
+\textbf{Def} Diagonal: Let $A \in M_{n \times n}$, then $A$ is diagonal iff $c_{ij} = 0$ for all $i = 1, 2, \dots, n$ and $j = 1, 2, \dots n$ where $i \ne j$\\
+\hspace*{5mm} Note: Is both $L\Delta$ and $U\Delta$
+
+*example
+
+\textbf{Def} Diagonal Entries: Let $A \in M_{n \times n}$, then $a_{ii}$ are the diagonal entries of $A$, and $(a_{11}, a_{22}, \dots a_{nn})$ is the main diagonal of $A$\\
+\hspace*{5mm} Note: $C = diag(c_{11}, c_{22}, \dots, c_{nn})$ is the diagonal matrix $C \in M_{n \times n}$
+
+\textbf{Def} Identity Matrix: The matrix $diag(1, 1, \dots 1)$ is called the identity matrix $I$ where $I_n \in M_{n \times n}$\\
+\hspace*{5mm} Note: For $A \in M_{m \times n}$, $I_mA = A$ and $AI_n = A$
+
+\textbf{Def} Elementary Matrix: A matrix created by performing a single ERO on the identity matrix\\
+\hspace*{5mm} Note: Elementary matrices can be classified as Type I, Type II, Type III
+
+\textbf{Lemma 5} Let $C \in M_{m \times n}$, if the same ERO is performed on $C \rightarrow B$ and $I_m \rightarrow E$, then
+$$B = EC$$
+
+\textbf{Lemma 6} Let $C \in M_{m \times n}$, if a finite number $q$ of EROs are performed on $C \rightarrow D$ and each is represented by $I_m \rightarrow E_1, E_2, \dots E_q$, then
+$$D = E_q\dots E_2E_1C$$
+
+
+\newpage
+
+\section{Linear Transformations}
+
+\textbf{Def} Function Definition: Let $A \in M_{m \times n}(\bb F)$, then the function determined by the matrix $A$ is 
+$$T_A : \bb F^n \rightarrow \bb F^m, T_A(\tbf x) = A\tbf x$$
+
+\textbf{Lemma 1}: Let $A \in M_{m \times n}(\bb F), \tbf x, \tbf y \in \bb F^n, c \in \bb F$, then $T_A$ is linear, that is\\
+$$\begin{cases}T_A(\tbf x + \tbf y) &= T_A(\tbf x) + T_A(\tbf y)\\ T_A(c\tbf x) &= cT_A(\tbf x)
+\end{cases}$$
+
+\textbf{Def} Linear Transformation: Let $T: \bb F^n \rightarrow \bb F^m$, $T$ is a linear transformation if and only if $\forall \tbf x, \tbf y \in \bb F^n, c \in \bb F$
+$$\begin{cases}T(\tbf x + \tbf y) &= T(\tbf x) + T(\tbf y)\\ T(c\tbf x) &= cT(\tbf x)
+\end{cases}$$
+
+\textbf{Lemma 2}: Let $T: \bb F^n \rightarrow \bb F^m$, $T$ is a linear transformation if and only if $\forall \tbf x, \tbf y \in \bb F^n, \forall c_1, c_2 \in \bb F$
+$$T(c_1\tbf x + c_2\tbf y) = c_1T(\tbf x) + c_2T(\tbf y)$$
+
+\textbf{Lemma 3}: Let $T: \bb F^n \rightarrow \bb F^m$ be a linear transformation, then
+$$T(\tbf 0_{\bb F^n}) = \tbf 0_{\bb F^m}$$
+
+\textbf{Def} Range: Let $T: \bb F^n \rightarrow \bb F^m$, The range of $T$ is the set of image points of $T$, that is
+$$R(T) = \{T(\tbf x) : \tbf x \in \bb F^n\}$$
+\hspace*{5mm} Note: $R(T)$ is a subset of $\bb F^m$
+
+\textbf{Lemma 4}: Let $A \in M_{m \times n}(\bb F)$ and $T_A: \bb F^n \rightarrow \bb F^m$, then
+$$R(T_A) = Col(A)$$
+
+\textbf{Def} Onto: The function $T: \bb F^n \rightarrow \bb F^m$ is onto if and only if the range of $T$ is the entire codomain of $T$, that is
+$$R(T) = \bb F^m$$
+\hspace*{5mm} Note: If $S: \bb F^n \rightarrow \bb F^m$ is a linear transformation, then $S$ is onto means that $R(S) = \bb F^m$
+
+\textbf{Corollary 1 from Lemma 4}: Let $A \in M_{m \times n}(\bb F)$ and $T_A : \bb F^n \rightarrow \bb F^m$, then $T_A$ is onto if and only if $Col(A) = \bb F^m$
+
+\textbf{Corollary 2 from Lemma 4}: Let $A \in M_{m \times n}(\bb F)$ and $T_A : \bb F^n \rightarrow \bb F^m$, then $T_A$ is onto if and only if $rank(A) = m$
+
+\textbf{Def} Nullspace: Let $T: \bb F^n \rightarrow \bb F^m$, The nullspace of $T$ is the set of vectors such that their image under $T$ is the zero vector
+$$N(T) = \{\tbf x \in \bb F^n: T(\tbf x) = \tbf 0_{\bb F^m}\}$$
+\hspace*{5mm} Note: If $T$ is a linear transformation, $\tbf 0_{\bb F^n} \in N(T)$ thus the nullspace is never empty
+
+\textbf{Lemma 5}: Let $A \in M_{m \times n}(\bb F)$ and $T_A : \bb F^n \rightarrow \bb F^m$, then
+$$N(T_A) = N(A)$$
+
+\textbf{Def} One-to-one: The function $T: \bb F^n \rightarrow \bb F^m$ is one-to-one if and only if distinct points have distinct images, that is $\forall \tbf x, \tbf y \in \bb F^n$
+$$\tbf x \ne \tbf y \Longrightarrow T(\tbf x) \ne T(\tbf y)$$
+
+\textbf{Lemma 6}: Let $A \in M_{m \times n}(\bb F)$ and $T_A : \bb F^n \rightarrow \bb F^m$, then $T_A$ is one-to-one if and only if
+$$N(T_A) = \{\tbf 0_{\bb F^n}\}$$
+
+\textbf{Corollary 3}: Let $A \in M_{m \times n}(\bb F)$ and $T_A : \bb F^n \rightarrow \bb F^m$, then $T_A$ is onto if and only if $nullity(A) = 0$ if and only if $rank(A) = n$
+
+\textbf{Def} Matrix representation of a linear transformation: Let $T: \bb F^n \rightarrow \bb F^m$ be a linear transformation. The matrix representation of $T$ is the $(m \times n)$ matrix whose columns are the images of the basic vectors in the standard basis in $\bb F^n$, that is
+$$[T]_S = \begin{bmatrix}
+\begin{bmatrix}1\\0\\ \vdots\\0\end{bmatrix} & \begin{bmatrix}0\\1\\ \vdots\\0\end{bmatrix} & \dots & \begin{bmatrix}0\\0\\ \vdots\\1\end{bmatrix}
+\end{bmatrix} = \begin{bmatrix}
+(T(\tbf e_1) & T(\tbf e_2) & \dots & T(\tbf e_n))
+\end{bmatrix}$$
+\hspace*{5mm} Note: The $_S$ indicates that the standard basis is being used as the domain/codomain\\
+\hspace*{5mm} Note: $[T_A]_S = A$\\
+\hspace*{5mm} Note: $T_{[T]_S} = T$\\
+\hspace*{5mm} Note: $T$ is onto if and only if $rank([T]_S) = m$\\
+\hspace*{5mm} Note: $T$ is one-to-one if and only if $rank([T]_S) = n$
+
+\textbf{Lemma 7}: Let $T : \bb F^n \rightarrow \bb F^m$ be a linear transformation, if $\tbf x \in \bb F^n$ then
+$$T(\tbf x) = [T]_S \tbf x$$
+
+\textbf{Lemma 8}: Let $f : \bb R \rightarrow \bb R$ be a linear transformation, if $p \in \bb R$ with $f(p) = \alpha \in \bb R$, then
+$$f(x) = \frac{\alpha}{p}x$$
+
+\newpage
+
+\textbf{Def} Composite Functions: For functions $T_1: \bb F^n \rightarrow \bb F^m, T_2: \bb F^m \rightarrow \bb F^p$, The composite function $T_2 \circ T_1 : \bb F^n \rightarrow \bb F^p$ is
+$$T(\tbf x) = (T_2 \circ T_1)(\tbf x) = T_2(T_1(\tbf x))$$
+
+\textbf{Lemma 9}: Let $T_1: \bb F^n \rightarrow \bb F^m, T_2: \bb F^m \rightarrow \bb F^p$ be a linear transformations, then $(T_2 \circ T_1)(\tbf x)$ is also a linear transformation
+
+\textbf{Lemma 10}: Let $T_1: \bb F^n \rightarrow \bb F^m, T_2: \bb F^m \rightarrow \bb F^p$ be a linear transformations, then 
+$$[T_2 \circ T_1]_S=[T_2]_S[T_1]_S$$
+
+\textbf{Def} $T^p$: For the function $T: \bb F^n \rightarrow \bb F^n$, we define
+$$T^p = T \circ T^{p-1}$$
+\hspace*{5mm} Note: $T^0 = T_I$, the identity transformation ($T_I(\tbf x) = \tbf x$)
+
+\textbf{Corollary 4 of Lemma 10}: Let $T: \bb F^n \rightarrow \bb F^n, p \in \bb N$, then 
+$$[T^p]_S = ([T]_S)^p$$
+
+\textbf{Def} Invertibility of a Matrix: For $A \in M_{n \times n}$, $A$ is invertible if $\exists B \in M_{n \times n}$ where
+$$AB = BA = I_n$$
+\hspace*{5mm} Note: $B$ or $A^{-1}$, the inverse, is also invertible
+
+\textbf{Def} Singularity of a Matrix: For $A \in M_{n \times n}$, $A$ is singular if it is not invertible
+
+\textbf{Lemma 11} Unique Inverses: Let $A \in M_{n \times n}$ be invertible, then $B$ is unique
+
+\textbf{Lemma 12}: Let $A \in M_{n \times n}$ be invertible, then
+$$A\tbf x = \tbf b \text{ has a unique solution } \tbf z = A^{-1}\tbf b, \forall \tbf b \in \bb F^n$$
+
+\textbf{Lemma 13} Properties of the Inverse: Let $A, B \in M_{n \times n}$ be invertible, $C, D \in M_{n \times m}$ be invertible, and $c \ne 0 \in \bb F$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $A^T$ is invertible and $(A^T)^{-1} = (A^{-1})^T$
+    \item $cA$ is invertible and $(cA)^{-1} = c^{-1}A^{-1}$
+    \item $AB$ is invertible and $(AB)^{-1} = B^{-1}A^{-1}$
+    \item if $AC = AD$, then $C = D$
+    \item if $AC = \bb O_{n \times m}$, then $C = \bb O_{n \times m}$
+\end{enumerate}
+
+\textbf{Lemma 14} Inverses of Elementary Matrices: All elementary matrices are invertible and their inverses are of the same type
+\begin{enumerate}[label=(\Roman*)]
+    \item The inverse of a type I is itself
+    \item The inverse of type II are from scaling by $m^{-1}$ instead of $m$
+    \item The inverse of type III are from subtracting instead of adding row $i$
+\end{enumerate}
+
+\textbf{Def} Invertible functions: For the function $T_1: \bb F^n \rightarrow \bb F^m$, it is invertible if and only if $\exists T_2: \bb F^m \rightarrow \bb F^n$ such that
+$$T_2 \circ T_1 = T_{I_{\bb F^n}} \text{ and } T_1 \circ T_2 = T_{I_{\bb F^m}}$$
+\hspace*{5mm} Note: If and only if it is one-to-one and onto
+
+\textbf{Lemma 15}: Let $T: \bb F^n \rightarrow \bb F^n$ be a linear transformation, if $T$ is invertible then its inverse $T^{-1}$ is unique and linear
+
+\textbf{Lemma 16}: Let $T: \bb F^n \rightarrow \bb F^n$ be a linear transformation, then $T$ is invertible if and only if $[T]_S$ is an invertible matrix, then
+$$[T^{-1}]_S = ([T]_S)^{-1}$$
+
+\textbf{Corollary 5 of Lemma 16}: Let $A \in M_{n \times n}(\bb F)$, if $A\tbf x = \tbf b$ has a unique solution $\forall \tbf b \in \bb F^n$ then $A$ is an invertible matrix
+
+\textbf{Def} Isomorphism: An invertible linear transformation is called an isomorphism
+
+\newpage
+\section{Matrix Inverse}
+
+\textbf{Lemma 1}: Let $A \in M_{n \times n}(\bb F)$, if $\exists B \in M_{n \times n}(\bb F)$ such that $AB = I_n$ then $A$ is invertible
+
+\textbf{Lemma 2} Invertibility of a Matrix: Let $A \in M_{n \times n}(\bb F)$, then $A$ is invertible if and only if $Rank(A) = n$
+
+\textbf{Corollary 1 of Lemma 2}: Let $A \in M_{n \times n}(\bb F)$, then $A$ is invertible if and only if $RREF(A) = I_n$
+
+\textbf{Lemma 3} Algorithm for Matrix Inversion: Let $A \in M_{n \times n}(\bb F)$, then 
+\begin{itemize}
+    \item Construct $(A \mid I_n)$
+    \item Reduce until $A$ is in REF, if $rank(A) \ne n$, A is not invertible
+    \item Reduce until $A$ is in RREF, in $(I_n \mid B)$, $B = A^{-1}$
+\end{itemize}
+
+\textbf{Lemma 4} Invertibility of a Matrix $M_{2 \times 2}(\bb F)$: Let $A = \begin{bmatrix}a&b\\c&d\end{bmatrix}$, then $A$ is invertible if and only if $ad - bc \ne 0$, then
+$$A^{-1} = \frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$$
+\hspace*{5mm} Note: $ad - bc$ is the determinant of the matrix
+
+
+\textbf{Def from Lecture} Rotation in $\bb R^2$: $T_\theta: \bb R^2 \rightarrow \bb R^2$ is the linear transformation from rotating $\theta$ radians around the origin
+
+Notice that
+$$T_\theta\left(\begin{bmatrix}1\\0\end{bmatrix}\right) = \begin{bmatrix}\cos(\theta)\\\sin(\theta)\end{bmatrix}$$
+$$T_\theta\left(\begin{bmatrix}0\\1\end{bmatrix}\right) = \begin{bmatrix}-\sin(\theta)\\\cos(\theta)\end{bmatrix}$$
+then
+$$T_\theta(\tbf x) = T_\theta\left(\begin{bmatrix}x_1\\x_2\end{bmatrix}\right) = \begin{bmatrix}x_1\cos(\theta) - x_2\sin(\theta)\\x_1\sin(\theta) + x_2\cos(\theta)\end{bmatrix}$$ thus $$[T_\theta(\tbf x)]_S = \begin{bmatrix}
+\cos(\theta) & -\sin(\theta) \\ \sin(\theta) & \cos(\theta)
+\end{bmatrix}$$
+
+and
+$$[T_{\alpha + \beta}]_S = \begin{bmatrix}
+\cos(\alpha) & -\sin(\alpha) \\ \sin(\alpha) & \cos(\alpha)
+\end{bmatrix}\begin{bmatrix}
+\cos(\beta) & -\sin(\beta) \\ \sin(\beta) & \cos(\beta)
+\end{bmatrix} = \begin{bmatrix}
+\cos(\alpha + \beta) & -\sin(\alpha + \beta) \\ \sin(\alpha + \beta) & \cos(\alpha + \beta)
+\end{bmatrix}$$
+
+
+\section{The Determinant}
+
+\textbf{Def} Submatrix: The $(i ,j)^{th}$ submatrix of $A \in M_{n \times n}$, $M_{ij}(A)$ is the $(n - 1) \times (n - 1)$ matrix obtained from removing the $i^{th}$ row and $j^{th}$ column
+
+\textbf{Def} Determinant of $1 \times 1$, $2 \times 2$ matrices: If $A \in M_{1 \times 1}(\bb F)$ then $$\det(A) = a_{11}$$
+If $A \in M_{2 \times 2}(\bb F)$ then $$\det(A) = a_{11}a_{22} - a_{12}a_{21}$$
+
+\textbf{Def} First Row Expansion of the Determinant: If $A \in M_{n \times n}(\bb F)$  with $n \geq 2$ then for $\det : M_{n \times n} \rightarrow \bb B$
+$$\det(A) = \sum_{j = 1}^{j = n} a_{1j}(-1)^{1+j}\det(M_{1j}(A))$$
+
+\textbf{Def} $I^{th}$ Row Expansion of the Determinant: If $A \in M_{n \times n}(\bb F)$  with $n \geq 2$ for any $I\leq n$ then
+$$\det(A) = \sum_{j = 1}^{j = n} a_{Ij}(-1)^{I+j}\det(M_{Ij}(A))$$
+
+\textbf{Def} $J^{th}$ Column Expansion of the Determinant: If $A \in M_{n \times n}(\bb F)$  with $n \geq 2$ for any $J\leq n$ then
+$$\det(A) = \sum_{i = 1}^{i = n} a_{iJ}(-1)^{i+J}\det(M_{iJ}(A))$$
+
+\textbf{Def} Cofactor: If $A \in M_{n \times n}(\bb F)$ the $(i, j)^{th}$ cofactor of $A$ is
+$$C_{ij}(A) = (-1)^{i+j} \det(M_{ij}(A))$$
+
+\textbf{Lemma 1}: Let $A \in M_{n \times n}(\bb F)$, then
+$$\det(A) = \det(A^T)$$
+
+\textbf{Lemma 2}: Let $A \in M_{n \times n}(\bb F)$ be a upper (lower) triangle, then
+$$\det(A) = a_{11}a_{22}\dots a_{nn} = \prod_{i = 1}^n a_{ii}$$
+
+\textbf{Corollary 1 of Lemma 2}: Let $A \in M_{n \times n}(\bb F)$ be a diagonal matrix, then Lemma 2 holds and
+$$\det(I_n) = 1$$
+
+\textbf{Theorem 1}: Let $A \in M_{n \times n}(\bb F) = \begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ \tbf A^n\end{bmatrix}$, then
+\begin{enumerate}[label=\alph*)]
+    \item The determinant is skew-symmetric under the interchange of rows
+    $$\det\left(\begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ \tbf A^k\\ \vdots\\ \tbf A^i\\ \vdots\\ \tbf A^n\end{bmatrix}\right) = -\det\left(\begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ \tbf A^i\\ \vdots\\ \tbf A^k\\ \vdots\\ \tbf A^n\end{bmatrix}\right)$$
+    \item The determinant is a linear operation on rows, that is for $\tbf B^i \in M_{1 \times n}(\bb F), c_1, c_2 \in \bb F$
+    $$\det\left(\begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ c_1\tbf A^i + c_2\tbf B^i\\ \vdots\\ \tbf A^n\end{bmatrix}\right) = c_1\det\left(\begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ \tbf A^i\\ \vdots\\ \tbf A^n\end{bmatrix}\right) + c_2\det\left(\begin{bmatrix}\tbf A^1 \\ \tbf A^2\\ \vdots\\ \tbf B^i\\ \vdots\\ \tbf A^n\end{bmatrix}\right)$$
+\end{enumerate}
+\hspace*{5mm} Note: The same statement is true if rows are replaced with columns throughout
+
+\textbf{Corollary 2 of Theorem 1}: Let $A \in M_{n \times n}(\bb F)$ have two identical rows (columns), then
+$$\det(A) = 0$$
+
+\textbf{Corollary 3 of Theorem 1} Determinants of elementary matrices: Let $E_k$ be an elementary matrix of type $k$, then
+\begin{enumerate}[label=\roman*)]
+    \item When $E_1$ is obtained from $I_n$ by interchanging 2 rows then $$\det(E_1) = -1$$
+    \item When $E_2$ is obtained from $I_n$ by scaling a row by $m \ne 0 \in \bb R$ then $$\det(E_2) = m$$
+    \item When $E_3$ is obtained from $I_n$ by adding a multiple of a row to another row then $$\det(E_3) = 1$$
+\end{enumerate}
+
+\textbf{Corollary 4 of Theorem 1} EROs and the determinant: Let $B \in M_{n \times n}(\bb F)$ be a single ERO from $A \in M_{n \times n}(\bb F)$, then
+\begin{enumerate}[label=\roman*)]
+    \item If ERO is type I, then $\det(B) = -\det(A)$
+    \item If ERO is type II by $m \ne 0 \in \bb R$, then $\det(B) = m\det(A)$
+    \item If ERO is type III, then $\det(B) = \det(A)$
+\end{enumerate}
+
+\textbf{Corollary 5}: Let $B \in M_{n \times n}(\bb F)$ be a single ERO with elementary matrix $E$ from $A \in M_{n \times n}(\bb F)$, then
+$$\det(B) = \det(E)\det(A)$$
+
+\textbf{Corollary 6}: Let $B \in M_{n \times n}(\bb F)$ be a series of EROs $E_1E_2\dots E_q$ from $A \in M_{n \times n}(\bb F)$, then
+$$\det(B) = \det(E_1E_{q-1} \dots E_1 A) = \det(E_q)\det(E_{q-1})\dots\det(E_1)\det(A)$$
+
+\textbf{Corollary 7} Invertibility iff the determinant is non-zero.: Let $A \in M_{n \times n}(\bb F)$, then $A$ is invertible if and only if
+$$\det(A) \ne 0$$
+
+\textbf{def I think}: A singular matrix must be if $\det(a) = 0$?
+
+\textbf{Corollary 8} Determinant of a product: Let $A, B \in M_{n \times n}(\bb F)$, then 
+$$\det(AB) = \det(A)\det(B)$$
+
+\textbf{Corollary 9}: Let $A \in M_{n \times n}(\bb F)$ be invertible, then 
+$$\det(A^{-1}) = (\det(A))^{-1}$$
+
+\textbf{Def} Adjoint (adjunct) of a Matrix: If $A \in M_{n \times n}(\bb F)$ the adjoint of $A$ is the transpose of the matrix of cofactors of $A$, that is $\forall i, j = 1, 2, \dots n$
+$$(adj(A))_{ij} = C_{ji}(A)$$
+\hspace*{5mm} Note: For $(I_n)_{ij}$, if $ i = j$ then $(I_n)_{ij} = 1$, else $(I_n)_{ij} = 0$
+
+\textbf{Lemma 3}: Let $A \in M_{n \times n}(\bb F)$, then 
+$$A adj(A) = adj(A) A = det(A) I_n$$
+
+\textbf{Corollary 10}: Let $A \in M_{n \times n}(\bb F)$, if $\det(A) \ne 0$ then
+$$A^{-1} = \left(\frac{1}{\det(A)}\right)adj(A)$$
+
+\textbf{Lemma 4} Cramer's Rule: Let $A \in M_{n \times n}(\bb F), A\tbf x = \tbf b \in \bb F^n$ where $\det(A) \ne 0$, if $B_j$ is $A$ with the $j^{th}$ column replaced by $\tbf b$, then 
+$$A\tbf x = \tbf b \text{ is given by } x_j = \frac{\det(B_j)}{\det(A)}$$
+
+\textbf{Lemma 5}: Let $\tbf v = \begin{bmatrix}v_1\\v_2\end{bmatrix}, \tbf w = \begin{bmatrix}w_1\\w_2\end{bmatrix} \in \bb R^2$, the area of the parallelogram with sides $\tbf v, \tbf w$ is
+$$A = \left| \det\left(\begin{bmatrix}v_1 & v_2\\w_1 & w_2\end{bmatrix}\right)\right|$$
+
+\textbf{Def} Standard Triple Product: If $\tbf x, \tbf y, \tbf z \in \bb R^3$, the scalar triple product $STP(\tbf x, \tbf y, \tbf z) = \tbf x \bullet (\tbf y \times \tbf z)$ is the volume of the parallelepiped with $\tbf x, \tbf y, \tbf z$ as sides
+$$V = |STP(\tbf x, \tbf y, \tbf z)|$$
+
+\textbf{Lemma 6}: Let $\tbf x, \tbf y, \tbf z \in \bb R^3$, then
+$$STP(\tbf x, \tbf y, \tbf z) = \det\left(\begin{bmatrix}\tbf x & \tbf y & \tbf z\end{bmatrix}\right) = \det\left(\begin{bmatrix}\tbf x & \tbf y & \tbf z\end{bmatrix}^T\right) = \det\left(\begin{bmatrix}\tbf x^T \\ \tbf y^T \\ \tbf z^T\end{bmatrix}\right)$$
+
+\newpage
+
+
+\section{Diagonalization and the Eigenvalue}
+
+\textbf{Def} Eigenvector: If $A \in M_{n \times n}(\bb F)$ then the vector $\tbf x \ne \tbf 0$ is an eigenvector of $A$ if and only if $\exists \lambda \in \bb F$ such that
+$$A\tbf x = \lambda \tbf x$$
+\hspace*{5mm} Note: $\lambda$ is an eigenvalue\\
+\hspace*{5mm} Note: $(\lambda, \tbf x)$ is an eigenpair
+
+\textbf{Def} Eigenvalue Equation: If $A \in M_{n \times n}(\bb F), \tbf x \in \bb F^n$, then
+$$A\tbf x = \lambda \tbf x \text{ or } (A-\lambda I_n)\tbf x = \tbf 0$$
+\hspace*{5mm} Note: There is an eigenvector iff $A - \lambda I_n$ is not invertible\\
+\hspace*{5mm} Note: Thus looking for a $\lambda$ where $\det(A - \lambda I_n) = 0$
+
+\textbf{Def} Characteristic Polynomial: If $A \in M_{n \times n}(\bb F), t \in \bb F$ then the characteristic polynomial is
+$$\Delta_A (t) = \det(A - t \lambda)$$
+\hspace*{5mm} Note: The characteristic equation is $\Delta_A (t) = 0$
+
+\textbf{Def} Eigenspace: If $A \in M_{n \times n}(\bb F), \lambda_1 \in \bb F$ is an eigenvalue of $A$, then the eigenspace is
+$$E_{\lambda_1} = N(A - t \lambda)$$
+\hspace*{5mm} Note: Contains all eigenvectors of $\lambda_1$ and $\tbf 0$
+
+\textbf{Def} Similar: If $A, B \in M_{n \times n}(\bb F)$, then $A$ is similar to $B$ if $\exists Q \in M_{n \times n}$ such that
+$$Q^{-1}AQ = B$$
+\hspace*{5mm} Note: If $A$ is similar to $B$, then $B$ is similar to $A$
+
+\textbf{Def} Similarity Transformation: If $A, Q \in M_{n \times n}(\bb F)$ then the similarity transformation is $T: M_{n \times n} \to M_{n \times n}$ defined by
+$$T(A) = Q^{-1}AQ$$
+
+\textbf{Def} Trace: If $A \in M_{n \times n}(\bb F)$ then the trace is the sum of its diagonal entries
+$$tr(A) = \sum_{i=1}^n a_{ii} = \sum_{i=1}^n (A)_{ii}$$
+
+\textbf{Lemma 1}: Let $A, B \in M_{n \times n}(\bb F)$ be similar, then
+\begin{enumerate}[label=(\roman*)]
+    \item $\det(A) = \det(B)$
+    \item $tr(A) = tr(B)$
+\end{enumerate}
+
+\textbf{Def} Diagonalizable Matrix: If $A \in M_{n \times n}(\bb F)$ and $D \in M_{n \times n}$ is diagonal, then $A$ is diagonalizable if $\exists P \in M_{n \times n}(\bb F)$ such that
+$$D = P^{-1}AP$$
+\hspace*{5mm} Note: $A$ is similar to a diagonal matrix
+
+\textbf{Lemma 2} Diagonalization I: Let $A \in M_{n \times n}(\bb F)$ have eigenpairs $(\lambda_1, \tbf v_1) \dots (\lambda_n, \tbf v_n)$ where $\lambda_1 \ne \dots \ne \lambda_n$. Let $P = (\tbf v_1, \dots \tbf v_n)$ then $P$ is invertible and
+$$P^{-1}AP = D = diag(\lambda_1, \dots \lambda_n)$$
+
+\textbf{Lemma 3} Properties of the Characteristic Polynomial I: Let $A \in M_{n \times n}(\bb F)$ have characteristic polynomial $\Delta_A(t) = \det(A-t I_n)$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $\Delta_A(t)$ is a $n^{th}$ order polynomial in $t$
+    $$\Delta_A(t) = b_0 + b_1 t + \dots + b_{n-1}t^{n-1} + b_nt^n$$
+    \item $b_n = (-1)^n$
+    \item $b_{n-1} = (-1)^{n-1} tr(A)$
+    \item $b_0 = \det(A)$
+\end{enumerate}
+
+\textbf{Lemma 4} Properties of the Characteristic Polynomial I: Let $A \in M_{n \times n}(\bb C)$ have characteristic polynomial $\Delta_A(t) = \det(A-t I_n)$, with $A$ having eigenvalues $\lambda_1 \dots \lambda_n$, then
+\begin{enumerate}[label=(\roman*)]
+    \item $$\sum^n_{i=1} \lambda_i = tr(A) = (-1)^{n-1}b_{n-1}$$
+    \item $$\prod^n_{i=1} \lambda_i = \det(A) = b_0$$
+\end{enumerate}
+
+\textbf{Corollary 1 of Lemma 4} : Let $A \in M_{n \times n}(\bb F)$, then $A$ is invertible if and only if
+$\lambda = 0$ is not an eigenvalue of $A$
+
+\textbf{Lemma 5}: Let $A \in M_{n \times n}(\bb F)$ be similar, then they have the same characteristic polynomials and the same eigenvalues
+
+\textbf{Def from Lecture}: If $P^{-1}AP = D$ (similar), then $D = PAP^{-1}$ and
+$$A^n = PDP^{-1}PDP^{-1}\dots PDP^{-1} = PDI_nDI_n\dots I_nDP^{-1} = PDD\dots DP^{-1} = PD^nP^{-1}$$
+
+\newpage
+\section{Subspaces, Span and Bases}
+
+\textbf{Def} Subspace: A subset $V \in \bb F^n$ is called a subspace of $\bb F^n$ to mean that
+\begin{enumerate}[label=(\roman*)]
+    \item $\tbf 0 \in V$
+    \item Closure under addition: $\forall\tbf x, \tbf y \in V, \tbf x + \tbf y \in V$
+    \item Closure under scalar multiplication: $\forall\tbf x\in V, c \in \bb F, c\tbf x \in V$
+\end{enumerate}
+\hspace*{5mm} Note: $\bb F^n$ and $\{\tbf 0\}$ are trivial subspaces of $\bb F^n$
+
+\textbf{Lemma 1} Checking for a Subspace: Let $V$ be a subset of $\bb F^n$, then $V$ is a subspace if and only if
+\begin{enumerate}[label=(\roman*)]
+    \item $V$ is non-empty
+    \item $\forall\tbf x, \tbf y \in V, c \in \bb F, c\tbf x + \tbf y \in V$
+\end{enumerate}
+
+\textbf{Example 1}:
+\begin{enumerate}[label=(\alph*)]
+    \item $\bb F^n$ is a subspace
+    \item $\{\tbf 0\}$ is a subspace
+    \item if $\{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \in \bb F^n$ then $Span(\{\tbf v_1, \tbf v_2, \dots \tbf v_p\})$ is a subspace
+    \item Let $A \in M_{n \times n}(\bb F)$, $Col(A)$ is a subspace
+    \item Let $T: \bb F^n \to \bb F^m$ be a linear transformation, $R(T)$ is a subspace of $\bb F^m$
+    \item Let $A \in M_{m \times n}(\bb F)$, the solution set $A\tbf x = \tbf 0$ is a subspace of $\bb F^n$
+    \item Let $T: \bb F^n \to \bb F^m$ be a linear transformation, $N(T)$ is a subspace of $\bb F^n$
+    \item Let $A \in M_{n \times n}(\bb F)$ with eigenvalue $\lambda$, $E_\lambda$ is a subspace of $\bb F^n$
+\end{enumerate}
+
+\textbf{Example 3}:
+\begin{enumerate}[label=(\alph*)]
+    \item $\bb F$ has only $\bb F$ and $\{\tbf 0\}$ as subspaces
+\end{enumerate}
+
+\textbf{Def} Linear Dependence: $\tbf v_1, \tbf v_2, \dots \tbf v_p$ being linear dependent means that exists $c_1, c_2, \dots c_p$ not all zero such that $c_1\tbf v_1 + c_2\tbf v_2 + \dots + c_p\tbf v_p = \tbf 0$\\
+\hspace*{5mm} Note: The trivial linear combination $c_1 = 0, c_2 = 0, \dots c_p = 0$ also makes the $\tbf 0$ vector
+
+\textbf{Def} Linear Independence: $\tbf v_1, \tbf v_2, \dots \tbf v_p$ being linear independent means that there does not exist non-zero $c_1, c_2, \dots c_p$ such that $c_1\tbf v_1 + c_2\tbf v_2 + \dots + c_p\tbf v_p = \tbf 0$
+
+\newpage
+\textbf{Def} Basis: Let $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\}$ be a subset of the subspace $V \in \bb F^n$. $B$ is a basis means that $B$ is a linearly independent set of vectors which spans $V$
+
+\textbf{Lemma 2}: Let $\tbf 0 \in S \subseteq \bb F^n$ then $S$ is linearly dependent
+
+\textbf{Lemma 3}: Let $S = \{\tbf x\} \subseteq \bb F^n$, then $S$ is linearly dependent if and only if $\tbf x = \tbf 0$
+
+\textbf{Lemma 4}: Let $S = \{\tbf x, \tbf y\} \subseteq \bb F^n$, then $S$ is linearly dependent if and only if one vector is a multiple of the other
+
+\textbf{Lemma 5}: Let $S = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \subseteq \bb F^n, A = (\tbf v_1, \tbf v_2, \dots \tbf v_p \in M_{n \times p})$ with $rank(A) = r$ and pivot columns $q_q, q_2, \dots q_r$, Let $U = \{\tbf v_{q_1}, \tbf v_{q_2}, \dots \tbf v_{q_r}\}$, then
+\begin{enumerate}[label=(\alph*)]
+    \item $S$ is linearly independent if and only if $r= p$
+    \item $U$ is linearly independent
+    \item A subset of $S$ that contains $U$ and any other vector from $S$ is linearly dependent
+    \item $Span(U) = Span(S)$
+\end{enumerate}
+
+\textbf{Corollary 1 of Lemma 5}: Let $S = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \subseteq \bb F^n$. If $n<p$ then $S$ is linearly dependent
+
+\textbf{Lemma 6}: Let $S = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \subseteq \bb F^n$ be linearly independent, Let $\tbf w \in \bb F^n$, then $\{\tbf v_1, \tbf v_2, \dots \tbf v_p, \tbf w\}$ is linearly dependent if and only if $w \in Span(S)$
+
+\textbf{Lemma 7}: Let $S = \{\tbf v_1, \tbf v_2, \dots \tbf v_k, \dots \tbf v_p\} \subseteq \bb F^n$ be linearly independent, then $S \setminus \{\tbf v_k\}$ is linearly independent
+
+\textbf{Lemma 8}: Let $S= \{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \subset V$ where $V$ is a subspace of $\bb F^n$, then $Span(S)$ is a subspace of $V$
+
+\textbf{Lemma 9}: Let $S= \{\tbf v_1, \tbf v_2, \dots \tbf v_p\}$ where $\tbf v_1, \tbf v_2, \dots \tbf v_p \in \bb F^n$, then $Span(S) = \bb F^n$ if and only if $rank \left(\begin{bmatrix}
+\tbf v_1& \tbf v_2& \dots &\tbf v_p
+\end{bmatrix}\right) = n$
+
+\textbf{Lemma 10}: Let $S= \{\tbf v_1, \tbf v_2, \dots \tbf v_p\}$ where $\tbf v_1, \tbf v_2, \dots \tbf v_p \in \bb F^n$, then if $S$ is a basis for $\bb F^n$ then $S$ has exactly $n$ vectors ($p = n$)
+
+\textbf{Lemma 11}: Let $S= \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$ for distinct $\tbf v_1, \tbf v_2, \dots \tbf v_n \in \bb F^n$, then $S$ is linearly independent if and only if $Span(S) = \bb F^n$
+
+\textbf{Def} Dimension: The number of elements in a basis for $\bb F^n$ ($n$) is the dimension or $n-$dimensional
+$$dim(\bb F^n) = n$$
+
+\textbf{Def} Standard Basis: The standard basis for $\bb F^n$ is the set of $n$ vectors $S = \{\tbf e_1, \tbf e_2, \dots \tbf e_n\}$
+
+\textbf{Theorem 1} Unique Representation Theorem: Let $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$ be a basis for $\bb F^n$, then $\forall \tbf v \in \bb F^n$ there exists unique scalars $c_1, c_2, \dots c_n \in \bb F$ such that
+$$\tbf v = c_1\tbf v_1 + c_2\tbf v_2 + \dots + c_n\tbf v_n$$
+
+\textbf{Def} Coordinates and Components: For a basis of $\bb F^n$ $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$, with $\tbf v = c_1\tbf v_1 + c_2\tbf v_2 + \dots + c_n\tbf v_n = \sum_{i = 1}^n c_i\tbf v_i \in \bb F^n$, the coordinate/component vector is
+$$[\tbf v]_B = \begin{bmatrix}c_1\\c_2\\ \vdots \\ c_n\end{bmatrix}$$
+\hspace*{5mm} Note: This is a if and only if relationship
+
+\textbf{Lemma 12} Taking Coordinates is a Linear Transformation: Let $B$ be a basis for $\bb F^n$, then $[]_B: \bb F^n \to \bb F^n$ given by $\tbf x \to [\tbf x]_B$ is a linear transformation
+
+\textbf{Lemma 13}: Let $B_1 = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}, B_2 = \{\tbf w_1, \tbf w_2, \dots \tbf w_n\}$ be a bases for $\bb F^n$, Let $\tbf x \in \bb F^n$ with $[\tbf x]_{B_1} = \begin{bmatrix}
+a_1\\a_2\\ \vdots \\ a_n
+\end{bmatrix}, [\tbf x]_{B_2} = \begin{bmatrix}
+b_1\\b_2\\ \vdots \\ b_n
+\end{bmatrix}$, then $$[\tbf x]_{B_2} = {}_{B_2}[I]_{B_1} [\tbf x]_{B_1} \text{ and } [\tbf x]_{B_1} = {}_{B_1}[I]_{B_2} [\tbf x]_{B_2}$$
+where ${}_{B_2}[I]_{B_1} = \begin{bmatrix}
+[\tbf v_1]_{B_2} & [\tbf v_2]_{B_2} & \dots & [\tbf v_n]_{B_2}
+\end{bmatrix}$ and ${}_{B_1}[I]_{B_2} = \begin{bmatrix}
+[\tbf w_1]_{B_1} & [\tbf w_2]_{B_1} & \dots & [\tbf w_n]_{B_1}
+\end{bmatrix}$
+
+\textbf{Def} Change of Basis (Coordinates) Matrix: The change-of-basis matrix from basis $B_1$ to basis $B_2$ is ${}_{B_2}[I]_{B_1}$
+
+\textbf{Corollary 2}: Let $B_1 = \{\tbf e_1, \tbf e_2, \dots \tbf e_n\} = S, B_2 = \{\tbf w_1, \tbf w_2, \dots \tbf w_n\}$ be bases for $\bb F^n$, Let $\tbf x \in \bb F^n$ with $[\tbf x]_{B_1} = \begin{bmatrix}
+a_1\\a_2\\ \vdots \\ a_n
+\end{bmatrix}, [\tbf x]_{B_2} = \begin{bmatrix}
+b_1\\b_2\\ \vdots \\ b_n
+\end{bmatrix}$, then $$[\tbf x]_{B_2} = {}_{B_2}[I]_{S} [\tbf x]_{S} \text{ and } [\tbf x]_{S} = {}_{S}[I]_{B_2} [\tbf x]_{B_2}$$
+where ${}_{B_2}[I]_{S} = \begin{bmatrix}
+[\tbf e_1]_{B_2} & [\tbf e_2]_{B_2} & \dots & [\tbf e_n]_{B_2}
+\end{bmatrix}$ and ${}_{S}[I]_{B_2} = \begin{bmatrix}
+[\tbf w_1]_{S} & [\tbf w_2]_{S} & \dots & [\tbf w_n]_{S}
+\end{bmatrix} = \begin{bmatrix}
+\tbf w_1 & \tbf w_2 & \dots & \tbf w_n
+\end{bmatrix}$
+
+\textbf{Corollary 3}: The change of basis matrices ${}_{B_1}[I]_{B_2}, {}_{B_2}[I]_{B_1}$ are inverses of each other, that is
+$${}_{B_1}[I]_{B_2}{}_{B_2}[I]_{B_1} = I_n$$
+
+\newpage
+
+
+\section{Matrix Representation of a Linear Operator}
+
+\textbf{Def} Linear Operator: For a linear transformation $T: \bb F^n \to \bb F^m$, $T$ being a linear operator means that $m = n$ such that $T: \bb F^n \to \bb F^n$
+
+\textbf{Def} Matrix Representation: For a linear operator $T$ on $\bb F^n$ with basis $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$, the matrix representation of $T$ with respect to $B$ is
+$$[T]_B = \begin{bmatrix}
+[T(\tbf v_1)]_B & [T(\tbf v_2)]_B & \dots & [T(\tbf v_n)]_B
+\end{bmatrix}$$
+
+\textbf{Lemma 1}: Let $T$ be a linear operator on $\bb F^n$, Let $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$ be a basis for $\bb F^n$, if $\tbf v \in \mathbb F^n$ then
+$$[T(\tbf v)]_B = [T]_B[\tbf v]_B$$
+
+\textbf{Lemma 2}: Let $T$ be a linear operator on $\bb F^n$, Let $B_1, B_2$ be a bases for $\bb F^n$, then $[T]_{B_1}$ and $[T]_{B_2}$ are similar, and
+$$[T]_{B_2} = {}_{B_2}[I]_{B_1} [T]_{B_1} {}_{B_1}[I]_{B_2} = ({}_{B_1}[I]_{B_2})^{-1} [T]_{B_1} {}_{B_1}[I]_{B_2}$$
+$$[T]_{B_1} = {}_{B_1}[I]_{B_2} [T]_{B_1} {}_{B_2}[I]_{B_1} = ({}_{B_2}[I]_{B_1})^{-1} [T]_{B_2} {}_{B_2}[I]_{B_1}$$
+
+\textbf{Corollary 1}: Let $T$ be a linear operator on $\bb F^n$, Let $B$ be a basis for $\bb F^n$, then $[T]_{B}$ and $[T]_{S}$ are similar, and
+$$[T]_{S} = {}_{S}[I]_{B} [T]_{B} {}_{B}[I]_{S} = ({}_{B}[I]_{S})^{-1} [T]_{B} {}_{B}[I]_{S}$$
+$$[T]_{B} = {}_{B}[I]_{S} [T]_{S} {}_{S}[I]_{B} = ({}_{S}[I]_{B})^{-1} [T]_{S} {}_{S}[I]_{B}$$
+
+\newpage
+
+\section{Diagonalization of Linear Operators}
+
+\textbf{Def} Linear Operator: For a linear operator $T$ in $\bb F^n$, the eigenvalue equation 
+$$T(\tbf x) = \lambda \tbf x$$
+where $\tbf x$ is the non-zero eigenvector and $\lambda \in \bb F$ is the eigenvalue
+
+\textbf{Lemma 1}: Let $T$ be a linear operator on $\bb F^n$, Let $B$ be a basis for $\bb F^n$,\\
+then
+$(\lambda, \tbf x)$ is an eigenpair of $T$ if and only if $(\lambda, [\tbf x]_B)$ is a eigenpair of $[T]_B$
+
+\textbf{Def} Diagonalizable: For a linear operator $T$ in $\bb F^n$, $T$ being diagonalizable means that there exists a basis $B$ of $\bb F^n$ such that $[T]_B$ is a diagonal matrix
+
+\textbf{Lemma 2}: Let $T$ be a linear operator on $\bb F^n$, then $T$ is diagonalizable if and only if there exists a basis $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_n\}$ of $\bb F^n$ consisting of eigenvectors of $T$
+
+\textbf{Lemma 3}: Let $T$ be a linear operator on $\bb F^n$, Let $B$ be a basis for $\bb F^n$, then $T$ is diagonalizable if and only if the matrix $[T]_B$ is diagonalizable
+
+\textbf{Corollary 1}: Let $A \in M_{n \times n}(\bb F)$, then $A$ is diagonalizable if and only if there exists a basis of $\bb F^n$ of eigenvectors of $A$
+
+\textbf{Lemma 4}: Let $A \in M_{n \times n}(\bb F)$ have eigenpairs $(\lambda_1, \tbf v_1), (\lambda_2, \tbf v_2), \dots (\lambda_m, \tbf v_m)$ for $1 \leq m \leq n$. If the eigenvalues are all different, then the set $W = \{\tbf v_1, \tbf v_2, \dots \tbf v_m\}$ is linearly independent
+
+\textbf{Def} Characteristic Polynomial: For a linear operator $T$ in $\bb F^n$ and basis $B$ for $\bb F^n$, the characteristic polynomial of $T$ is
+$$\Delta_T(t) = \Delta_{[T]_B}(t)$$
+
+\textbf{Def} Algebraic Multiplicity: The algebraic multiplicity of eigenvalue $\lambda$ of $A \in M_{n \times n}(\bb F)$ is the highest power of the factor $(t - \lambda)^{a_\lambda}$ that divides the characteristic polynomial, that is
+$$(t-\lambda)^{a_\lambda} \mid \Delta_A(t) \text{ but } (t-\lambda)^{a_\lambda + 1} \nmid \Delta_A(t)$$
+
+\textbf{Def} Geometric Multiplicity: The geometric multiplicity of eigenvalue $\lambda$ of $A \in M_{n \times n}(\bb F)$ is the dimension of the eigenspace $E_\lambda$, $g_\lambda$ 
+
+\textbf{Lemma 5}: Let $\lambda$ be an eigenvalue of $A \in M_{n \times n}(\bb F)$, then
+$$1 \leq g_\lambda \leq a_\lambda$$
+
+\textbf{Lemma 6}: Let $A \in M_{n \times n}(\bb F)$ have eigenvalues $\lambda_1, \lambda_2, \dots \lambda_m$ with eigenspaces $E_{\lambda_1}, E_{\lambda_2}, \dots E_{\lambda_m}$ having bases $B_1, B_2, \dots B_m$, then
+$$B= B_1 \cup B_2 \cup \dots \cup B_m \text{ is linearly independent}$$
+
+\textbf{Lemma 7}: Let $A \in M_{n \times n}(\bb F)$ have $\Delta_A(t) = (\lambda_1 - t)^{a_{\lambda_1}}(\lambda_2 - t)^{a_{\lambda_2}}\dots(\lambda_m - t)^{a_{\lambda_m}}h(t)$ where $\lambda_1, \lambda_2, \dots \lambda_m$ are eigenvalues of $A$ and $h(t)$ is a polynomial in $t$ with no linear factors, then
+$$A \text{ is diagonalizable if and only if both } h(t) =1 \text{ and } a_{\lambda_i} = g_{\lambda_i} \text{ for each } i = 1,2, \dots m$$\\
+
+
+\section{Special Subspaces and Bases}
+
+\textbf{Def} Trivial Subspace: $Span(\emptyset) = \{\tbf 0\}$ where $\emptyset$ is a basis for $\{ \tbf 0 \}$ with dimension 0
+
+\textbf{Lemma 1}: Let $V$ be a subspace of $\bb F^n$, then there exist a linearly subset $W$ with $p \leq n$ elements such that
+$$Span(W) = V$$
+
+\textbf{Def} Basis: For a subspace $U$ of $\bb F^n$, the subset $W$ of $U$ being a basis means that
+\begin{enumerate}
+    \item $W \subseteq U$
+    \item $W$ is linearly independent
+    \item $Span(W) = U$
+\end{enumerate}
+
+\textbf{Lemma 2}: Let $V$ be a subspace of $\bb F^n$, where $U = \{\tbf u_1, \tbf u_2, \dots \tbf v_p\}, W = \{\tbf w_1, \tbf w_2, \dots \tbf w_q\}$ are bases for $V$, then $p = q$
+
+\textbf{Def} Dimension: For a subspace $V$ of $\bb F^n$, the dimension $dim(V) = p$ is the number of vectors in a basis for $V$
+
+\textbf{Lemma 3} Replacement Theorem: Let $V$ be a subspace of $\bb F^n$ such that $dim(V) = k > 0$, where $W = \{\tbf w_1, \tbf w_2, \dots \tbf w_q\}$ is a basis for $V$, then $W$ can be extended to a basis $B$ of $\bb F^n$
+\hspace*{5mm} Remark 1: $rank(A) = dim(Col(A))$
+
+\textbf{Theorem 1} The Dimension Theorem (or Rank-Nullity Theorem): Let $A \in M_{m \times n}(\bb F)$, then
+$$n = dim(Col(A)) + dim(N(A))$$
+thus
+$$n = rank(A) + nullity(A) \text{ and } n = rank(T_A) + nullity(T_A)$$
+
+\newpage
+
+
+
+\section{Vector Space}
+
+\textbf{Axioms}
+\begin{enumerate}[label=(\Roman*)]
+    \item Closure under addition: $\forall \tbf v, \tbf w \in V$, $v \oplus \tbf w \in V$
+    \item Closure under scalar multiplication: $\forall \tbf v \in V, c \in \bb F$, $c \odot \tbf v \in V$
+\end{enumerate} and eight other axioms need to be satisfied for a vector space
+\begin{enumerate}[label=(\alph*)]
+    \item $\forall \tbf v, \tbf w \in V$, $\tbf v \oplus \tbf w = \tbf w \oplus \tbf v$
+    \item $\forall \tbf v, \tbf w, \tbf z \in V$, $(\tbf v \oplus \tbf w) \oplus \tbf z = \tbf v \oplus (\tbf w \oplus \tbf z)$
+    \item $\forall \tbf v \in V$, $\tbf 0 \oplus \tbf v = \tbf v$
+    \item $\forall \tbf v \in V$, $\tbf v \oplus (-\tbf v) = \tbf 0$
+    \item $\forall \tbf v, \tbf w \in V, c \in \bb F$, $c \odot (\tbf v \oplus \tbf w) = (c \odot \tbf v) \oplus (c \odot \tbf w)$
+    \item $\forall \tbf v \in V, c, d \in \bb F$, $(c + d) \odot \tbf v = (c \odot \tbf v) \oplus (d \odot \tbf v)$
+    \item $\forall \tbf v \in V, c, d \in \bb F$, $(c \times d) \odot \tbf v = c \odot (d \odot \tbf v)$
+    \item $\forall \tbf v \in V, c, d \in \bb F$, $1 \odot \tbf v = \tbf v$
+\end{enumerate} 
+
+\textbf{Def} Vector Space: If we are given a set $V$, a field $\bb F$, a $\oplus, \odot$, and all axioms hold, this is a vector space over $\bb F$
+
+\textbf{Def} Linear Combination: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with $\tbf v_1, \tbf v_2 \in V, c_1, c_2 \in \bb F$, then a linear combination is $(c_1 \odot \tbf v_1) \oplus (c_2 \odot \tbf v_2)$
+
+\textbf{Def} Span: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with $W = \{\tbf w_1, \tbf w_2, \dots \tbf w_p\} \subset V$, then the set of all linear combinations of the elements of $W$ is
+$$Span(W) = \{(c_1 \odot \tbf v_1) \oplus (c_2 \odot \tbf v_2) \oplus \dots \oplus (c_p \odot \tbf v_p): c_i \in \bb F, i = 1, 2, \dots p\}$$
+
+\textbf{Def} Vector Subspace: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with a subset $U$ of $V$, then $U$ being a subspace means that $U$ is a  non-empty subset closed under addition and scalar multiplication, thus
+\begin{enumerate}
+    \item $U \ne \emptyset$
+    \item $\forall \tbf u_1, \tbf u_2 \in U$, $\tbf u_1 \oplus \tbf u_2 \in U$
+    \item $\forall \tbf u_1 \in U, c \in \bb F$, $c \odot \tbf u_1 \in U$
+\end{enumerate}
+
+\textbf{Lemma 1}: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$, the zero vector is unique
+
+\textbf{Lemma 2}: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$ with $\tbf x \in V$, the additive inverse ($-\tbf x$) is unique
+
+\textbf{Lemma 3}: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$ with $a \in \bb F, \tbf x \in V$, then
+$$0 \odot \tbf x = \tbf 0 \text{ and } a \odot \tbf 0 = \tbf 0$$
+
+\textbf{Lemma 4} The additive inverse: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$ with $\tbf x \in V$, then
+$$-\tbf x = (-1) \odot \tbf x$$
+
+\textbf{Lemma 5} The cancellation identity: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$ with $a \in \bb F, \tbf x \in V$, if $a \odot \tbf x = \tbf 0$, then
+$$a = 0 \text{ or } \tbf x = \tbf 0$$
+
+\textbf{Lemma 6}: Let $(V, \oplus, \bb F, \odot)$ be a vector space over $\bb F^n$ with $W = \{\tbf w_1, \tbf w_2, \dots \tbf w_p\} \subset V$ where $p \geq 1$, then $Span(W)$ is the smallest subspace of $V$ that contains $W$
+
+\textbf{Def} Linear Dependence: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with $W = \{\tbf w_1, \tbf w_2, \dots \tbf w_p\} \subset V$, $W$ being linearly dependent means that $\exists a_i \in \bb F, i = 1,2, \dots p \ne 0$ such that
+$$(a_1 \odot \tbf w_1) \oplus (a_2 \odot \tbf w_2) \oplus \dots \oplus (a_p \odot \tbf w_p) =\tbf 0$$
+
+\textbf{Def} Basis: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\} \subset V$, $B$ being a basis means that
+\begin{enumerate}
+    \item $B \subset V$
+    \item $Span(B) = V$
+    \item $B$ is linearly independent
+\end{enumerate}
+
+\textbf{Def} Components/Coordinates: For a vector space over $\bb F$ of $(V, \oplus, \bb F, \odot)$ with $B = \{\tbf v_1, \tbf v_2, \dots \tbf v_p\}$ being a basis for $V$, the components/coordinates of a vector $\tbf v \in V$ are the scalars such that
+$$\tbf v = (a_1 \odot \tbf v_1) \oplus (a_2 \odot \tbf v_2) \oplus \dots \oplus (a_p \odot \tbf v_p)$$
+\hspace*{5mm} Note: $[\tbf v]_B = \begin{bmatrix}
+a_1\\a_2\\ \vdots \\ a_p
+\end{bmatrix}$ is the coordinate vector of $\tbf v$ in $B$
+
+\newpage
+\section{The Rowspace of a Matrix}
+
+\textbf{Def} Rowspace: For a $A \in M_{m \times n}(\bb F)$, the rowspace is a vector subspace of $M_{1 \times n}(\bb F)$
+$$Row(A) = Span(\{\tbf A^1, \tbf A^2, \dots \tbf A^m\})$$
+
+\textbf{Lemma 1}: Let $A \in M_{m \times n}(\bb F)$, if $B$ is performed by elementary row operations on $A$, then
+$$Row(A) = Row(B)$$
+
+\textbf{Corollary 1}: Let $A \in M_{m \times n}(\bb F)$,
+$$dim(Row(A)) = rank(A)$$
+
+\textbf{Lemma 2}: Let $A \in M_{m \times n}(\bb F)$, then
+$$rank(A) = rank(A^T)$$
+
+\section{Matrix Representations of Linear Transformations}
+
+\textbf{Def} Linear transformation: For a $T: U \in \bb F^n \to V \in \bb F^m$, being a linear transformation means that
+\begin{enumerate}
+    \item For all $\tbf u_1, \tbf u_2 \in U$, $T(\tbf u_1 + \tbf u_2) = T(\tbf u_1) + T(\tbf u_2)$
+    \item For all $\tbf u \in U, c \in \bb F$, $T(c\tbf u) = cT(\tbf u)$
+\end{enumerate}
+
+\textbf{Def} Matrix Representation: For a $T: U \to V$, with $B_1 = \{\tbf u_1, \tbf u_2, \dots \tbf u_p\}$ being a basis for $U \in \bb F^n$ and $B_2 = \{\tbf v_1, \tbf v_2, \dots \tbf v_q\}$ being a basis for $V \in \bb F^m$
+$${}_{B_2}[T]_{B_1} = \begin{bmatrix}[T(\tbf u_1)]_{B_2} & [T(\tbf u_2)]_{B_2} & \dots & [T(\tbf u_p)]_{B_2}\end{bmatrix}$$
+
+\textbf{Lemma 1}: Let $T: T \to V$, with $B_1$ being a basis for $U \in \bb F^n$ and $B_2$ being a basis for $V \in \bb F^m$ and ${}_{B_2}[T]_{B_1}$ is the matrix representation of the linear transformation, then for all $\tbf x \in U$
+$$[T(\tbf x)]_{B_2} = {}_{B_2}[T]_{B_1} [\tbf x]_{B_1}$$
+
+
+
+
+
+
+
+\end{document}

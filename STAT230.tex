@@ -1,0 +1,772 @@
+
+\documentclass[11pt,notitlepage]{report}
+
+\textwidth 15cm 
+\textheight 21.3cm
+\evensidemargin 6mm
+\oddsidemargin 6mm
+\topmargin -1.1cm
+\setlength{\parskip}{1.5ex}
+
+\usepackage{titlesec}
+    \titleformat{\chapter}{\Large\centering}{}{0pt}{}{}
+
+\usepackage{amsfonts,amsmath,amssymb,enumerate, amsthm, graphicx}
+\usepackage{enumitem}  
+\usepackage{hyperref}
+\newcommand\sbullet[1][.75]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+
+\begin{document}
+\parindent=0pt
+\pagenumbering{gobble}
+
+
+\title{\vspace{-15mm}STAT 230 Personal Notes \vspace{-5mm}}
+\author{by Sam Gunter}
+
+\date{Instructors: Audrey Béliveau, Adam Kolkiewicz, Don McLeish, Diana Skrzydlo\\ 
+Course Notes by: Chris Springer, Jerry Lawless, Don McLeish, Cyntha Struthers\\
+$\sbullet$ Winter 2021 $\sbullet$ University of Waterloo $\sbullet$}
+\maketitle
+
+
+
+\textbf{Important Counting Arrangements}:
+\begin{itemize}
+    \item $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ takes $k$ items from $n$ disregarding order
+    \item $n!$ finds the arrangements of length $n$ using each item in $n$ once
+    \item $n^{(k)} = \frac{n!}{(n-k)!}$ finds the arrangements of length $k$ using each item from $n$ at most once
+    \item $n^k$ finds the arrangements of length $k$ using the items from $n$ as often as wanted
+\end{itemize}
+
+\tableofcontents{}
+
+\newpage
+\pagenumbering{arabic} 
+\setcounter{page}{1}
+
+\chapter{INTRODUCTION TO PROBABILITY}
+
+\section{Definitions of Probability}
+
+
+\textbf{Def} Randomness: Caused by (1) variability in population and (2) variability in processes
+
+\textbf{Def} Sample Space (\textit{S}): All distinct possible outcomes to a random experiment\\
+\hspace*{5mm} Note: Continues in 2.1
+
+\textbf{Def} Probability: Can be defined in 3 ways:
+\begin{enumerate}
+    \item \textbf{Def} Classical: Provided all points in \textit{S} are equal, $$\frac{\text{number of ways the event can occur}}{\text{number of outcomes in \textit{S}}}$$\\
+\hspace*{5mm} Note: Continues in 2.1
+    \item \textbf{Def} Relative Frequency: The portion of times an event has happened after repetitions of an experiment.
+    \item \textbf{Def} Subjective Probability: How sure an individual is that an event will happen.
+\end{enumerate}
+
+\textbf{Def} Probability Model: 
+\begin{itemize}
+    \item The sample space is defined
+    \item A set of events (subset of \textit{S}) is defined
+    \item A mechanism for assigning probabilities is defined
+\end{itemize}
+
+\newpage
+
+
+\chapter{MATHEMATICAL PROBABILITY MODELS}
+
+\section{Sample Spaces and Probability}
+
+\textbf{Def} Sample Space (\textit{S}) Continued: All distinct possible outcomes to a random experiment
+\begin{itemize}
+    \item In a single trial, one and only one outcome can occur
+    \item The sample space does not need to be uniquely defined ($\textit{S} = \{1, 2, 3, 4, 5, 6\}$ or $\textit{S} = \{\text{Even}, \text{Odd}\}$)
+    \item May be discrete ($\textit{S} = \{1, 2, 3 \dots\}$ or $\textit{S} = \left\{\frac{1}{2}, \frac{1}{4}, \frac{1}{8} \dots\right\}$) or non-discrete ($\textit{S} = \{x:x>0\}$)
+\end{itemize}
+
+\textbf{Def} Simple Event: The subset of the event $\textit{A} \in \textit{S}$ contains only a single point where \textit{S} is discrete ($\textit{A} = \{a_1\}$)
+
+\textbf{Def} Compound Event: The subset of the event $\textit{A} \in \textit{S}$ contains two or more simple events ($\textit{A} = \{a_1, a_2 \dots\}$)
+
+\textbf{Def} Probability Distribution : The probability distribution on \textit{S} is the set of probabilities $\{P(a_i), i = 1, 2, \dots\}$ where the following conditions hold:
+\begin{itemize}
+    \item $0 \leq P(a_i) \leq 1$
+    \item $\sum_{\text{all} i} P(a_i) = 1$
+\end{itemize}
+
+
+\textbf{Def} Probability: The probability of an event \textit{A} occurring is
+$$P(A) = \sum_{a \in A}P(a)$$
+
+
+\textbf{Def} Odds: The odds of an event \textit{A} occurring is
+$$\frac{P(A)}{1-P(A)}$$
+\hspace*{5mm} Note: The odds against the event is the reciprocal
+
+\newpage
+
+
+\chapter{PROBABILITY AND COUNTING TECHNIQUES}
+
+\section{Addition and Multiplication Rules}
+
+
+\textbf{Def} Uniform Probability Model: A set where each simple event has probability $\frac{1}{n}$
+
+\textbf{Def} Addition Rule: Suppose we can do job 1 in $p$ ways and job 2 in $q$ ways. Then we can do
+either job 1 \textbf{OR} job 2 (but not both), in $p + q$ ways
+
+\textbf{Def} Multiplication Rule: Suppose we can do job 1 in $p$ ways and, for each of these ways, we
+can do job 2 in $q$ ways. Then we can do both job 1 \textbf{AND} job 2 in $p \times q$ ways
+
+
+\section{Counting Arrangements or Permutations}
+
+\textbf{Def} Permutations: A sample space which is a set of arrangements or sequences
+
+\textbf{Def} $n$ to $k$ factors: A product is said to have $n$ to $k$ factors if
+$$n^{(k)} = \frac{n!}{(n-k)!}$$
+
+\textbf{Def} Stirling’s Approximation: An approximation to $n!$ for large $n$ values
+$$n! \approx \left(\frac{n}{e}\right)^n \sqrt{2\pi n}$$
+\hspace*{5mm} Note: For $n \geq 8$, the error is less than 0.01
+
+\textbf{Def} Complement: The complement of $A$, denoted $\overline{A}$, is the set of all outcomes in $S$ that are not in $A$
+
+
+
+\section{Counting Subsets or Combinations}
+
+\textbf{Def} Combinatorial: "$n$ choose $k$" is sued to denote the number of subsets (with no order) of size $k$ that can be selected from the set of $n$ objects
+$$\binom{n}{k} = \frac{n^{(k)}}{k!} = \frac{n!}{k!(n-k)!}$$
+
+\hspace*{5mm} Note: Properties of $\binom{n}{k}$ are as follows
+\begin{itemize}
+    \item $n^{(k)} = \frac{n!}{(n-k)!} = n(n-1)^{(k-1)}$ for $k \geq 1$
+    \item $\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n^{(k)}}{k!}$
+    \item $\binom{n}{k} = \binom{n}{n-k}$ for all $k = 0, 1,\dots n$
+    \item If we define $0! = 1$, then the formulas hold with $\binom{n}{0} = \binom{n}{n} = 1$
+    \item $\binom{n}{k} = \binom{n-1}{n-k} + \binom{n-1}{k}$
+    \item \textbf{Binomial Theorem: } $(1+x)^n = \binom{n}{0} + \binom{n}{1}x + \binom{n}{2}x^2 + \dots + \binom{n}{n}x^n$
+\end{itemize}
+
+
+\chapter{PROBABILITY RULES AND CONDITIONAL PROBABILITY}
+
+\section{General Methods}
+
+\textbf{Proved} Set-Theoretic Rules:
+\begin{enumerate}
+    \item $P(S) = 1$
+    \item For an event $A$, $0 \leq P(A) \leq 1$
+    \item For $A \subseteq B$, $P(A) \leq P(B)$
+\end{enumerate}
+
+\textbf{Def} Union: If $A$ or $B$ occur (inclusive), the event occurred
+$$A \cup B$$
+
+\textbf{Def} Intersection: If $A$ and $B$ occur, the event occurred
+$$A \cap B$$
+\hspace*{5mm} Note: Often shortened to $AB$
+
+\textbf{Def} Complement: If $A$ did not occur, the event occurred
+$$\overline A$$
+\hspace*{5mm} Note: $\overline S = \emptyset$
+
+\textbf{Proved} De Morgan's Laws: \begin{enumerate}
+    \item $\overline{A \cup B} = \overline A \cap \overline B$
+    \item $\overline{A \cap B} = \overline A \cup \overline B$
+\end{enumerate}
+\newpage
+\section{Rules for Unions of Events}
+
+\textbf{Proved} Addition Law of Probability or the Sum Rule: \begin{enumerate}
+    \setcounter{enumi}{3}
+    \item \textbf A $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+\end{enumerate}
+\textbf{Proved} Probability of the Union of Three Event: \begin{enumerate}
+    \setcounter{enumi}{3}
+    \item \textbf B $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C)$
+\end{enumerate}
+\textbf{Proved} Probability of the Union of $n$ Events: \begin{enumerate}
+    \setcounter{enumi}{3}
+    \item \textbf{C} $P(A_1 \cup A_2 \cup \dots \cup A_n) = \sum_i P (A_i) - \sum_{i < j}P(A_iA_j) + \sum_{i < j < k} P(A_iA_jA_k) - \dots$
+\end{enumerate}
+
+\textbf{Def} Mutually Exclusive: Events $A$ and $B$ are mutually exclusive if
+$$A \cap B = \emptyset$$
+
+
+
+\textbf{Proved} Probability of the Union of Two Mutually Exclusive Events: Let $A, B$ be mutually exclusive, then
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf A $P(A \cup B) = P(A) + P(B)$
+\end{enumerate}
+\textbf{Proved} Probability of the Union of $n$ Mutually Exclusive Events: Let $A_a, A_2, \dots, A_n$ be mutually exclusive, then
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf B $P(A \cup A_2 \cup \dots \cup A_n) = \sum_{i = 1}^n P(A_i)$
+\end{enumerate}
+\textbf{Proved} Probability of the Complement of an Event: \begin{enumerate}
+    \setcounter{enumi}{5}
+    \item $P(A) = 1 - P(\overline A)$
+\end{enumerate}
+
+
+\newpage
+\section{Intersections of Events and Independence}
+
+\textbf{Def} Independent Events: Events are independent if and only if
+$$P(A \cap B) = P(A)P(B)$$
+
+\textbf{Def} Mutually Independent: Events $A_1, A_2, \dots A_n$ are mutually independent if and only if
+$$P(A_1 \cap A_2 \cap \dots \cap A_n) = P(A_1)P(A_2)\dots P(A_n)$$
+for all sets $\{i_1, i_2, \dots i_k\}$ of distinct subscripts chosen from $(1, 2, \dots, n)$\\
+\hspace*{5mm} Note: Often referred to as "independent"
+
+\section{Conditional Probability}
+
+
+\textbf{Def} Conditional Events: If an event $B$ occurred, the probability that $A$ occurs is the conditional probability of $A$ given $B$
+$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
+\hspace*{5mm} Note: If $A$ and $B$ are independent, then $P(A \mid B) = P(A)$
+
+
+\textbf{Theorem 10}: The events $A$ and $B$ are independent if and only if 
+$$P(A \mid B) = P(A) \text{ or } P(B \mid A) = P(B)$$
+
+
+\section{Product Rules, Law of Total Probability and Bayes’ Theorem}
+
+\textbf{Proved} Product Rules: Let $P(A) > 0, P(A \cap B) > 0, P(A \cap B \cap C) > 0$\begin{enumerate}
+    \setcounter{enumi}{6}
+    \item
+    \begin{itemize}
+    \item $P(AB) = P(A)P(B \mid A)$
+    \item $P(ABC) = P(A)P(B \mid A)P(C \mid AB)$
+    \item $P(ABCD) = P(A)P(B \mid A)P(C \mid AB)P(D \mid ABC)$
+   \end{itemize}
+\end{enumerate}
+
+\textbf{Proved} Law of Total Probability: Let $A_1, A_2, \dots A_k$ be a partition of the sample space into mutually exclusive (disjoint) events. Let $B$ be an event in $S$. Then
+$$P(B) = P(BA_1) + P(BA_2) + \dots + P(BA_k) = \sum^{k}_{i=1} P(B \mid A_i)P(A_i)$$
+
+\textbf{Proved} Bayes’ Theorem: Let $P(B) > 0$. Then
+$$P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B \mid \overline A)P(\overline A)+P(B \mid A)P(A)}$$
+
+
+\section{Useful Series and Sums}
+
+\textbf{Geometric Series} 
+$$\text{if $t \ne 1$, then }\sum_{i = 0}^{n-1} t^i = 1 + t + t^2 + \dots t^{n-1} = \frac{1-t^n}{1-t}$$
+$$\text{if $|t| < 1$, then }\sum_{x = 0}^{\infty} t^x = 1 + t + t^2 + \dots = \frac{1}{1-t}$$
+and thus with higher derivatives,
+$$\text{if $|t| < 1$, then }\sum_{x = 0}^{\infty} xt^{x-1} = \frac{1}{(1-t)^2}$$
+
+\textbf{Binomial Theorem}
+$$\text{if $n \in \mathbb N$ and $t \in \mathbb R$, then }(1+t)^n = 1 + \binom{n}{1}t + \binom{n}{2}t^2 + \dots + \binom{n}{n}t^n = \sum_{x=0}^n \binom{n}{x}t^x$$
+$$\text{if $n \not \in \mathbb N$ and $|t| < 1$, then }(1+t)^n = \sum_{x=0}^{\infty} \binom{n}{x}t^x$$
+
+\textbf{Multinomial Theorem}
+$$\text{if $n \in \mathbb N$, then }(t_1 + t_2 + \dots + t_k)^n = \sum \frac{n!}{x_1!x_2!\dots x_k!}t_1^{x_1}t_2^{x_2} \dots t_k^{x_k}$$
+where the summation is over all non-negative integers such that $x_1 + x_2 + \dots + x_k = n$\\
+\hspace*{5mm} Note: See page 62
+
+\textbf{Hypergeometric Identity}
+$$\sum_{x=0}^\infty \binom{a}{x}\binom{b}{n-x}=\binom{a+b}{n}$$
+
+\textbf{Exponential Series} Let $f(x) = e^x$ and $f^{(k)}(0) = 1$ for $k = 1, 2, \dots$
+$$\text{if $t \in \mathbb R$, then }e^t = \frac{t^0}{0!} + \frac{t^1}{1!} + \frac{t^2}{2!} + \dots = \sum_{n=0}^{\infty} \frac{t^n}{n!}$$
+
+\textbf{Special Integer Series}
+\begin{itemize}
+    \item $1 + 2 + 3 + \dots + n = \frac{n(n+1)}{2}$
+    \item $1^2 + 2^2 + 3^2 + \dots + n^2 = \frac{n(n+1)(2n+1)}{6}$
+    \item $1^3 + 2^3 + 3^3 + \dots + n^3 = \left(\frac{n(n+1)}{2}\right)^2$
+\end{itemize}
+
+
+\chapter{DISCRETE RANDOM VARIABLES}
+
+\section{Random Variables and Probability Functions}
+
+
+\textbf{Def} Random Variable: A function that assigns  areal number to each point in a sample space $S$
+$$X = x_1, x_2, x_3, \dots$$
+\hspace*{5mm} Note: The full sample space must be a union of the events of each element in $X$
+
+\textbf{Def} Discrete Random Variable: Takes values in a countable set
+
+\textbf{Def} Continuous Random Variable: Takes values in an interval, not countable
+
+\textbf{Def} Probability Function: Let $X$ be a discrete random variable with range($X$) = $A$
+$$f(x) = P(X = x)$$
+\begin{enumerate}
+    \item $f(x) \geq 0, \forall x \in A$
+    \item $\sum_{x\in A} f(x) = 1$
+\end{enumerate}
+\hspace*{5mm} Note: Make sure to state the domain of the function
+
+\textbf{Def} Probability Distribution: The set of pairs
+$$\{(x, f(x)): x\in A\}$$
+
+\textbf{Def} Cumulative Distribution Function: The sum of all previous probability functions
+$$F(x) = \sum_{u \leq x}f(u) = P(X \leq x) \text{ for all } x \in \mathbb R$$
+\begin{enumerate}
+    \item $F(x)$ is non-decreasing
+    \item $0 \leq F(x) \leq 1$
+    \item $\lim_{x \rightarrow -\infty} F(x) = 0$ and $\lim_{x \rightarrow \infty} F(x) = 1$
+\end{enumerate}
+
+\section{Discrete Uniform Distribution}
+
+\textbf{Physical Setup} For a range of $X$ of $\{a, \dots, b\}$, where each integer is equally probable\\
+\hspace*{5mm} Note: With replacement\\
+\hspace*{5mm} Note: Parameters $a$, and $b$
+
+\textbf{Probability Function} For $b-a+1$ values in the set, each has $\frac{1}{b-a+1}$, thus
+$$f(x) = P(X = x) = \begin{cases}\frac{1}{b-a+1} \text{ for $x \in \{a, \dots, b$\}}\\0\end{cases}$$
+
+\section{Hypergeometric Distribution}
+
+\textbf{Physical Setup} A collection of $N$ objects with $r$ of $S$ and $N - r$ of $F$. $X$ is the number of successes obtained\\
+\hspace*{5mm} Note: Without replacement\\
+\hspace*{5mm} Note: Parameters $r$, $N$, and $n$
+
+\textbf{Probability Function} For $x \geq \max(0, n-N+r)$ and $x \leq \min(r, n)$
+$$f(x) = P(X = x) = \frac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}$$
+
+\section{Binomial Distribution}
+
+\textbf{Physical Setup} A experiment with outcome $P(S) = p$ and $P(F) = 1 - p$ repeated for $n$ independent times (Bernoulli Trials).
+$$\sim Binomial(n, p)$$
+\hspace*{5mm} Note: With replacement\\
+\hspace*{5mm} Note: Parameters $n$, and $p$\\
+\hspace*{5mm} Note: If $p = 0$ or $p = 1$, then $X$ is said to be a degenerate random variable
+
+\textbf{Probability Function} For $0\leq x \leq n$ and $0 < p < 1$
+$$f(x) = P(X = x) = \binom{n}{x}p^x(1-p)^{n-x}$$
+
+\newpage
+
+\section{Negative Binomial Distribution}
+
+\textbf{Physical Setup} A experiment with outcome $P(S) = p$ and $P(F) = 1 - p$ repeated for until $S$ is obtained for the $k^{th}$ time. $X$ is the number of failures before the $k^{th}$ success
+$$\sim Negative Binomial(k, p)$$
+\hspace*{5mm} Note: With replacement\\
+\hspace*{5mm} Note: Parameters $k$, and $p$
+
+\textbf{Probability Function} For $0\leq x$ and $0 < p < 1$
+$$f(x) = P(X = x) = \binom{x+k-1}{x}p^k(1-p)^x$$
+
+\section{Geometric Distribution}
+
+\textbf{Physical Setup} The negative Binomial Distribution with $k = 1$
+$$\sim Geometric(p)$$
+
+\section{Poisson Distribution from Binomial}
+
+\textbf{Physical Setup} Restrict the product $np = \mu$, then take the Binomial Distribution as $n \rightarrow \infty$ (thus $p \rightarrow 0$)
+$$\sim Poisson(\mu)$$
+\hspace*{5mm} Note: Used when $n$ is large and $p$ is small\\
+\hspace*{5mm} Note: If $n$ is large and $p$ is large, switch "failure" vs "success"
+\hspace*{5mm} Note: If $\mu = 0$ then is said to be a degenerate distribution
+
+\textbf{Probability Function} When $np = \mu$, For $x \geq 0$
+$$f(x) = \frac{\mu ^x e^{-\mu}}{x!}$$
+
+\newpage
+\section{Poisson Distribution from Poisson Process}
+
+\textbf{def} Order Notation: $g(\Delta t) = o(\Delta t)$ as $\Delta t \rightarrow 0$ means $g$ approaches $0$ faster than $\Delta t$ approaches $0$
+$$\frac{g(\Delta t)}{\Delta t} \rightarrow 0 \text{ as } \Delta t \rightarrow 0$$
+
+\textbf{Physical Setup} A situation where certain events occur at random points of time and follow the Poisson Process
+\begin{enumerate}
+    \item \textbf{Independence}: Occurrences in non-overlapping intervals are independent
+    \item \textbf{Individuality}: Events do not occur in clusters, that is $$P(\text{2 or more events in }(t, t+\Delta t)) = o(\Delta t) \text{ as } \Delta t \rightarrow 0$$
+    \item \textbf{Homogeneity/Uniformity}: The probability of one occurrence in an interval $(t, t+\Delta t)$ is $\lambda \Delta t$ for small $\Delta t$
+\end{enumerate}
+\hspace*{5mm} Note: $\lambda$ is the intensity or rate of occurrence parameter, thus $\lambda t$ is the average number of occurrences per $t$ units of time\\
+\hspace*{5mm} Note: If $n$ is large and $p$ is large, switch "failure" vs "success"
+
+\textbf{Probability Function} Let $f_t(x)$ be the probability of $x$ occurrences over the interval $t$. For $x \geq 0$
+$$f_t(x) = f(x) = \frac{(\lambda t)^xe^{-\lambda t}}{x!}$$
+
+\chapter{COMPUTATIONAL METHODS WITH R}
+no thanks
+\chapter{EXPECTED VALUE AND VARIANCE}
+\section{Summarizing Data on Random Variables}
+
+\textbf{def} Frequency Distribution: The number of times each value of $X$ occurred
+
+\textbf{def} Sample Mean: The average for a particular sample, the mean of $n$ outcomes $x_1, \dots x_n$ for random variable $X$ is
+$$\overline x = \sum_{i=1}^n \frac{x_i}{n}$$
+
+\textbf{def} Median: The value such that half of results are below and half the results are above when arranged in numerical order
+
+\textbf{def} Mode: The value which occurs the most often. \\
+\hspace*{5mm} Note: There is no guarantee of a single mode
+
+\section{Expectation of a Random Variable}
+
+\textbf{def} Expected Value: Let $X$ be a discrete random variable with $range(X) = A$ and probability function $f(x)$, then
+$$\mu = E(X) = \sum_{x \in A}xf(x)$$
+
+\textbf{Proved} Theorem 17: Let $X$ be a discrete random variable with $range(X) = A$ and probability function $F(x)$. Then the expected value of some $g(X)$ of $X$ is
+$$E[g(X)] = \sum_{x \in A} g(x)f(x)$$
+\hspace*{5mm} Note: $E[g(X)]$ is the average value (expected value) of $g(X)$ in an infinite series of repetitions of the process where $X$ is defined
+
+\textbf{Proved} Linearity Properties of Expectation: For constants $a, b$
+$$E[ag(X) + b] = aE[g(X)] + b$$
+
+
+
+\section{Means and Variances of Distributions}
+
+\textbf{Proved} Expected value of a Binomial random variable: Let $X \approx Binomial(n, p)$
+$$E(X) = np$$
+
+\textbf{Proved} Expected value of the Poisson random variable: Let $X$ have a Poisson distribution
+$$E(X) = \lambda t$$
+
+\textbf{Proved} Expected value of the Hypergeometric random variable: Let $X$ have a Hypergeometric distribution
+$$E(X) = \frac{nr}{N}$$
+
+\textbf{Proved} Expected value of the Negative Binomial random variable: Let $X$ have a Negative Binomial distribution
+$$E(X) = \frac{k(1-p)}{p}$$
+
+\textbf{def} Variance: The average square distance from the mean, that is
+$$\sigma^2 = Var(X) = E\left[(X - \mu)^2\right]$$
+\hspace*{5mm} (1): $Var(X) = E(X^2) - [E(X)]^2 = E(X^2) - \mu^2$\\
+\hspace*{5mm} (2): $Var(X) = E[X(X-1)] + E(X)-[E(X)]^2 = E[X(X-1)] + \mu - \mu^2$
+
+\textbf{def} Standard Deviation: The square root of the variance, that is
+$$\sigma = sd(X) = \sqrt{Var(X)} = \sqrt{E\left[(X-\mu)^2\right]}$$
+
+\textbf{Proved} Variance of a Binomial random variable: Let $X \approx Binomial(n, p)$
+$$Var(X) = np(1-p)$$
+
+\textbf{Proved} Variance of a Poisson random variable: Let $X$ have a Poisson distribution
+$$Var(X) = \mu$$
+\hspace*{5mm} (2): The variance is equal to the mean
+
+\textbf{Proved} If $a, b$ are constants, $Y = aX + b$, and $\mu_X = E(X), \sigma_X^2 = Var(X), E(Y) = \mu_Y, Var(Y) = \sigma_Y^2$, then
+$$\mu_Y = E(Y) = aE(X) + b = a\mu_X + b$$
+and
+$$\sigma_Y^2 = Var(Y) = a^2Var(X) = a^2 \sigma_X^2$$
+
+
+
+\chapter{CONTINUOUS RANDOM VARIABLES}
+
+\section{Terminology and Notation}
+
+\textbf{def} Continuous Random Variables: Have a range of all possible values over an interval (or collection of intervals)
+
+\textbf{def} Cumulative Distribution Function: 
+\begin{enumerate}
+    \item $F(x)$ is defined for all real $x$
+    \item $F(x)$ is non-decreasing over all real $x$
+    \item $\lim_{x \to -\infty} F(x) = 0, \lim_{x \to \infty} F(x) = 1$
+    \item $P(a < X < b) = P(a < X \leq b) = P(a \leq X < b) = P(a \leq X \leq b) = F(b) - F(a)$
+\end{enumerate}
+
+\textbf{def} Probability Density Function: The likely hood of small intervals around specific $x$ values
+$$f(x) = \frac{\mathrm{d}F(x)}{\mathrm{d}x}$$
+\begin{enumerate}
+    \item $P(a \leq X \leq b) = F(b) - F(a) = \int_a^b f(x) \mathrm{d}x$
+    \item $f(x) > 0$
+    \item $\int_{-\infty}^\infty f(x) \mathrm{d}x = \int_{\text{all }x}f(x) \mathrm{d}x = 1$
+    \item $F(x) = \int_{\infty}^x f(u) \mathrm{d}u$
+\end{enumerate}
+
+\textbf{def} Quantiles and Percentiles: For a cumulative distribution function $F(x)$, the $p^{th}$ quantile is the value $q(p)$ such that $P[X \leq q(p)] = p$\\
+\hspace*{5mm} Note: $q(p)$ is the $100^{th}$ percentile of distribution\\
+\hspace*{5mm} Note: $m = q(0.5)$ is the median of distribution
+
+\textbf{def} Expected Value: For a continuous random variable,
+$$E[g(X)] = \int_{-\infty}^\infty g(x)f(X) \mathrm{d}x$$
+
+
+\section{Continuous Uniform Distribution}
+
+\textbf{Physical Setup} Over an interval $[a, b]$, each subinterval of a fixed length is equally likely
+$$\sim Uniform(a, b)$$
+\hspace*{5mm} Note: Parameters $b > a$
+
+\textbf{Probability Density Function}
+$$f(x) = \begin{cases}\frac{1}{b-a} & a \leq x \leq b\\0 & \text{otherwise}\end{cases}$$
+
+\textbf{Cumulative Distribution Function}
+$$F(x) = \begin{cases}0 & x<a\\ \frac{x-a}{b-a} & a \leq x \leq b\\1 & x > b\end{cases}$$
+
+\textbf{Mean}
+$$E(X) = \frac{b+a}{2}$$
+
+\textbf{Variance}
+$$Var(X) = \frac{(b-a)^2}{12}$$
+
+\textbf{Def} Gamma Function: For $\alpha > 0$,
+$$\Gamma(\alpha) = \int_0^\infty y^{\alpha -1}e^{-y}\mathrm{d}y$$
+\begin{enumerate}
+    \item For $\alpha >0$, $\Gamma(\alpha) = (\alpha -1)\Gamma(\alpha -1)$
+    \item For $\alpha \in \mathbb N$, $\Gamma(\alpha) = (\alpha -1)!$
+    \item $\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$
+\end{enumerate}
+
+\newpage
+
+\section{Exponential Distribution}
+
+\textbf{Physical Setup} The time it takes it takes between occurrences of an event in the Poisson process
+$$\sim Exponential(\theta)$$
+\hspace*{5mm} Note: Parameters $\lambda > 0$ is the average rate of occurrence\\
+\hspace*{5mm} Note: Parameters $\theta > 0$ is the waiting time until an occurrence
+
+\textbf{Probability Density Function}
+$$f(x) = \begin{cases}\lambda e^{-\lambda x} & x>0\\0 & \text{otherwise}\end{cases} \text{ or } f(x) = \begin{cases}\frac{1}{\theta} e^{-\frac{x}{\theta}} & x>0\\0 & \text{otherwise}\end{cases}$$
+
+\textbf{Cumulative Distribution Function}
+$$F(x) = \begin{cases}0 & x\leq 0\\ 1-e^{-\lambda x} & x > 0\end{cases} \text{ or } F(x) = \begin{cases}0 & x\leq 0\\ 1-e^{-\frac{x}{\theta}} & x > 0\end{cases}$$
+
+\textbf{Mean}
+$$E(X) = \frac{1}{\lambda} \text{ or } \theta$$
+
+\textbf{Variance}
+$$Var(X) = \theta^2$$
+
+\textbf{Def} Memoryless Property: The probability you have to wait $c$ unit of time does not depend on how long you have been waiting, that is
+$$P(X > c + b \mid X > b) = P(X > c)$$
+
+\section{Computer Generation of Random Variables}
+
+\textbf{Theorem 24} If $F$ is an arbitrary cumulative distribution function and $U \sim Uniform(0, 1)$ then $X = F^{-1}(U)$ has cumulative distribution function $F(x)$
+
+\newpage
+\section{Normal Distribution}
+
+\textbf{Physical Setup} A "bell curve", where $X$ is a physical dimension of some kind
+$$X \sim N(\mu, \sigma^2)$$
+\hspace*{5mm} Note: Parameters $x, \mu \in \mathbb R$\\
+\hspace*{5mm} Note: Parameters $\sigma \in \mathbb R^+$
+
+\textbf{Gaussian Distribution} Similar but with $\sigma$ instead of $\sigma^2$
+$$X \sim G(\mu, \sigma)$$
+
+\textbf{Probability Density Function}
+$$f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$$
+
+\textbf{Cumulative Distribution Function}
+$$F(x) = \int_{-\infty}^x  \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2} \mathrm{d}y$$
+
+\textbf{Mean}
+$$E(X) = \mu$$
+
+\textbf{Variance}
+$$Var(X) = \sigma^2$$
+
+\textbf{Def} Standard Normal Distribution: A normal distribution with $\mu = 0$ and $\sigma = 1$
+$$N(0, 1)$$
+
+\textbf{Theorem 25} Let $X \sim N(\mu, \sigma^2), Z = \frac{X - \mu}{\sigma}$, then $Z \sim N(0, 1)$ and
+$$P(X \leq x) = P(Z \leq \frac{x-\mu}{\sigma})$$
+
+
+
+\chapter{MULTIVARIATE DISTRIBUTIONS}
+
+\section{Basic Terminology and Techniques}
+
+\textbf{Def} Joint Probability Function: For discrete random variables $X, Y$, the probability both occur
+$$f(x, y) \geq 0 \text{ and }\sum_{\text{all }(x, y)}f(x, y) = 1$$
+
+\textbf{Def} Marginal Probability: For a joint probability function $f(x, y)$, the probability when interested in only one random variable
+$$f_1(x) = \sum_{\text{all } y}f(x, y)$$
+
+\textbf{Def} Independent Random Variables: For a joint probability function $f(x, y)$, being independent means that
+$$f(x, y) = f_1(x) f_2(y)$$
+or generalized to
+$$f(x_1, x_2, \dots x_n) = f_1(x_1) f_2(x_2) \dots f_n(x_n)$$
+
+\textbf{Def} Conditional Probability: For a joint probability function $f(x, y)$, if $f_2(y) > 0$ then the conditional probability function of $X$ given $Y$ is
+$$f_1(x \mid y) = \frac{f(x, y)}{f_2(y)}$$
+
+\textbf{Theorem 29} If $X \sim Poisson(\mu_1)$ and $Y \sim Poisson(\mu_2)$ independently, then
+$$T = X + Y \sim Poisson(\mu_1 + \mu_2)$$
+
+\textbf{Theorem 30} If $X \sim Binomial(n, p)$ and $Y \sim Binomial(m, p)$ independently, then
+$$T = X + Y \sim Binomial(n+m, p)$$
+
+\newpage
+
+\section{Multinomial Distribution}
+
+\textbf{Physical Setup} An experiment with $k$ distinct outcomes with probability $p_!, p_2, \dots p_k$, repeated $n$ times. Let $X_i$ be the number of times $i$ outcome occurs
+$$(X_1, X_2, \dots X_k) \sim Multinomial(n,p_1,p_2,\dots p_k)$$
+\hspace*{5mm} Note: $p_1 + p_2 + \dots + p_k = 1$\\
+\hspace*{5mm} Note: $X_1 + X_2 + \dots + X_k = n$
+
+
+\textbf{Joint Probability Function}
+$$f(x_1, x_2, \dots x_p) = \frac{n!}{x_1!x_2!\dots x_p!} p_1^{x_1}p_2^{x_2}\dots p_k^{x_k}$$
+
+
+\section{Markov Chains}
+
+\textbf{Def} Markov Chain: A sequence of discrete random variables $X_1, X_2, \dots$ which take integer states $1, 2, \dots N$. There exists a certain transition probability matrix $P$, such that for all $i = 1,2,\dots N, j=1,2,\dots N$
+$$P(X_{n+1} =j\mid X_n = i) = P_{ij}$$
+\hspace*{5mm} Note: Markov chains only depend on present state, not past states
+
+\textbf{Did not complete reading, was optional for stat 230}
+
+\section{Covariance and Correlation}
+
+
+\textbf{Mean}
+$$E(g(X_1,X_2,\dots X_n)) = \sum_{\text{all }(x_1,x_2,\dots, x_n)} g(x_1,x_2,\dots x_n)f(x_1,x_2,\dots x_n)$$
+
+\textbf{Proved} Property of Multivariate Expectation: 
+$$E[ag_1(X_1,X_2) + b g_2(X_1,X_2)] = aE[g_1(X_1,X_2)] + bE[g_2(X_1, X_2)]$$
+
+\textbf{Def} Covariance: A way to measure the relation between $X$ and $Y$, denoted as
+$$\sigma_{XY} = Cov(X, Y) = E[(X-\mu_X)(Y-\mu_Y)] = E(XY) - E(X)E(Y)$$
+\hspace*{5mm} Note: $>0$ means positively correlated, $<0$ negative means negatively correlated
+
+\textbf{Theorem 35} If $X$ and $Y$ are independent then $Cov(X, Y) = 0$
+
+\textbf{Theorem 36} If $X$ and $Y$ are independent then,
+$$E[g_1(X)g_2(Y)] = E[g_1(X)]E[g_2(Y)]$$
+
+\textbf{Def} Correlation Coefficient: A way to measure the strength of the relation between $X$ and $Y$, covariance scaled to $[-1,1]$ denoted as
+$$\rho = \frac{Cov(X, Y)}{\sigma_X\sigma_Y}$$
+\hspace*{5mm} Note: Since $p$ has same sign as $Cov(X, Y)$, Theorems 35 and 36 hold\\
+\hspace*{5mm} Note: As $p \to \pm 1$, the relation becomes linear
+
+
+\section{Mean and Variance of a Linear Combination of Random Variables}
+
+\textbf{Proved} Results for Means:
+\begin{enumerate}
+    \item $E(aX + bY) = aE(X) + bE(Y)$
+    \item $\displaystyle E\left(\sum_{i=1}^n X_i\right) = \sum_{n=1}^n E(X_i)$
+    \item if $\displaystyle \overline X = \frac{1}{n} \sum_{i=1}^n X_i$ then $E(\overline X) = \mu$
+\end{enumerate}
+
+\textbf{Proved} Results for Covariance:
+\begin{enumerate}
+    \item $Cov(X, X) = Var(X)$
+    \item $Cov(aX + bY, cU+dV) = acCov(X, U) + adCov(X,V) + bcCov(Y, U) + bdCov(Y, V)$
+\end{enumerate}
+
+\textbf{Proved} Variance of a linear combination:
+$$Var(aX + bY) = a^2Var(X) + b^2Var(Y) + 2abCov(X, Y)$$
+
+\textbf{Proved} Variance of a sum of independent random variables: Assume $X$ and $Y$ are independent,
+$$Var(aX + bY) = a^2Var(X) + b^2Var(Y)$$
+
+\textbf{Proved} Variance of a general linear combination of random variables:
+$$\displaystyle Var\left(\sum_{i=1}^n a_iX_i \right) = \sum_{i=1}^n a_i^2 \sigma_i^2 + 2 \sum_{i=1}^n \sum_{j=i+1}^n a_ia_j Cov(X_i, X_j)$$
+
+\textbf{Proved} Variance of a linear combination of independent random variables: Assume $X_1, X_2, \dots X_n$ are independent,
+\begin{enumerate}
+    \item $\displaystyle Var\left(\sum_{i=1}^n a_iX_i \right) = \sum_{i=1}^n a_i^2 \sigma_i^2$
+    \item If $X_1, X_2, \dots X_n$ have the same variance, then $Var(\overline X) = \frac{\sigma^2}{n}$
+\end{enumerate}
+
+\section{Linear Combinations of Independent Normal Random Variables}
+
+\textbf{Theorem 38} Linear Combinations of Independent Normal Random Variables: 
+\begin{enumerate}
+    \item Let $X \sim N(\mu, \sigma^2)$ and $Y = aX + b$, then $Y \sim N(a\mu + b, a^2\sigma^2)$
+    \item Let $X \sim N(\mu_1, \sigma_1^2), Y \sim N(\mu_2, \sigma_2^2)$ be independent, \\
+    then $aX + bY \sim N(a\mu_1 + b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2)$
+    \item Let $X_1, X_2, \dots X_n$ be independent $\sim N(\mu, \sigma^2)$ variables, \\
+    then $\displaystyle \sum_{i=1}^n X_i \sim N(n\mu, n\sigma^2)$ and $\overline X \sim N\left(\mu, \frac{\sigma^2}{n}\right)$
+\end{enumerate}
+
+\section{Indicator Random Variables}
+
+\textbf{Def} Indicator Random Variables: Define a variable $X_i$ where $X_i = 0$ indicates the trial was a failure, while $X_i = 1$ indicates the trial was a success
+
+
+\textbf{Proved} Variance of a Hypergeometric random variable: Let $X$ have a Hypergeometric distribution
+$$Var(X) = n\left(\frac{r}{N}\right)\left(1-\frac{r}{N}\right)\left(\frac{N-n}{N-1}\right)$$
+
+\chapter{CENTRAL LIMIT THEOREM/MOMENT GENERATING FUNCTIONS}
+
+\section{Central Limit Theorem}
+
+
+\textbf{Theorem 39} Central Limit Theorem: Let $X_1, X_2, \dots X_n$ be independent random variables with the same distribution, mean ($\mu$), and variance ($\sigma^2$), then as $n \to \infty$
+$$S_n = \sum^n_{i=1} X_i \sim N\left(n\mu, n\sigma^2\right)$$
+$$\overline X = \frac{1}{n} \sum^n_{i=1} X_i \sim N\left(\mu, \frac{\sigma^2}{n}\right)$$
+\hspace*{5mm} Note: Better approximation for larger $n$\\
+\hspace*{5mm} Note: Better approximation when the distribution $X_i$ is symmetric
+
+\textbf{Def} Continuity Correction: Changing the bounds of $P(10 \leq S_{100} \leq 20)$ to be offset by $.5$, thus $P(9.5 \leq S_{100} \leq 20.5)$. Sign of offset is decided by whether left/right hand Riemann sum corrects value (if past expected value make positive)\\
+\hspace*{5mm} Note: Should not be applied to a continuous distribution
+
+\textbf{Theorem 40} Normal Approximation to Poisson: Let $X \sim Poisson(\mu)$, then as $\mu \to \infty$, the cdf
+$$Z = \frac{X - \mu}{\sqrt{\mu}} \sim N(0, 1)$$
+\hspace*{5mm} Note: $X \sim N(\mu, \mu)$
+
+\textbf{Theorem 41} Normal Approximation to Binomial: Let $X \sim Binomial(n, p)$, then as $n \to \infty$, the random variable
+$$W = \frac{X-np}{\sqrt{np(1-p)}} \sim N(0, 1)$$
+\hspace*{5mm} Note: $X \sim N(np, np(1-p))$
+
+
+
+\section{Moment Generating Functions}
+
+\textbf{Def} Moment Generating Function: For a discrete random variable $X$ and $a > 0$, the moment generating function is defined as
+$$M(t) = E(e^{tX}) = \sum_{x \in \text{ all}} e^{tx} f(x) < \infty$$
+For a continuous random variable $X$ and $a > 0$, the moment generating function is
+$$M(t) = E(e^{tX}) = \int_{-\infty}^\infty e^{tx} f(x) \mathrm{d}x < \infty$$
+\hspace*{5mm} Note: The $k^{th}$ moment is $E(X^k)$
+
+\textbf{Theorem 43}: Let $X$ have the moment generating function $M(t)$ for $t \in [-a, a]$, then
+$$E(X^k) = M^{(k)}(0)$$
+
+\textbf{Proved} MGF of Binomial: Let $X \sim Binomial(n, p)$, then
+$$M(t) = \sum^n_{x=0} \binom{n}{x}p^x(1-p)^{n-x} = (pe^t + 1 -p)^n$$
+
+\textbf{Proved} MGF of Poisson: Let $X \sim Poisson(\mu)$, then
+$$M(t) = e^{-\mu + \mu e^t}$$
+
+\textbf{Theorem 44} Uniqueness Theorem for Moment Generating Functions: Let $X, Y$ have moment generating functions $M_X(t), M_Y(t)$, if $M_X(t) = M_Y(t)$ for all $t \in \mathbb R$ then $X$ and $Y$ have the same distribution
+
+\textbf{Proved} MGF of Normal: Let $X \sim N(\mu, \sigma^2)$, then
+$$M(t) = e^{\mu t + \frac{\sigma^2t^2}{2}}$$
+
+\textbf{Proved} MGF of Exponential: Let $X \sim Exponential(\theta)$, then
+$$M(t) = \frac{1}{1-\theta t} \text{ for } t < \frac{1}{\theta}$$
+
+\newpage
+
+
+\section{Multivariate Moment Generating Functions}
+
+\textbf{Def} Joint Moment Generating Function: For random variables $X, Y$, the joint moment generating function is defined as
+$$M(s, t) = E(e^{sX+tY})$$
+\hspace*{5mm} Note: If $X, Y$ are independent, then $M(s, t) = M_X(s)M_Y(t)$
+
+\textbf{Theorem 47}: The moment generating function of the sum of independent random variables is the product of individual moment generating functions
+
+\textbf{Theorem 48}: Let $X_i = N(\mu_i, \sigma_i^2)$ be independent where $a_1, a_2, \dots a_n \in \mathbb R$ then
+$$\sum_{i=1}^n a_iX_i \sim N\left(\sum_{i=1}^n a_i \mu_i, \sum_{i=1}^n a_i^2 \sigma_i^2\right)$$
+
+\textbf{Was optional for STAT 230}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

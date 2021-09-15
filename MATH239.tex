@@ -1,0 +1,659 @@
+
+\documentclass[11pt,notitlepage]{report}
+\textwidth 15cm 
+\textheight 21.3cm
+\evensidemargin 6mm
+\oddsidemargin 6mm
+\topmargin -1.1cm
+\setlength{\parskip}{1.5ex}
+
+\usepackage{titlesec}
+    \titleformat{\chapter}{\Large\centering}{}{0pt}{}{}
+
+\usepackage{amsfonts,amsmath,amssymb,enumerate, amsthm, graphicx}
+\usepackage{enumitem}  
+\usepackage{hyperref}
+\usepackage{multicol}
+\counterwithout{section}{chapter}
+\newcommand{\bb}[1]{\ensuremath{\mathbb{#1}}}
+\newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand\sbullet[1][.75]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+
+\makeatletter
+\newcommand*{\toccontents}{\@starttoc{toc}}
+\makeatother
+
+
+\begin{document}
+\parindent=0pt
+
+\title{\vspace{-15mm}MATH 239 Personal Notes \vspace{-5mm}}
+\author{by Sam Gunter}
+\date{Instructors: Cheolwon Heo, Olya Mandelshtam, Ashwin Nayak, Jorn van der Pol \\ 
+Course Notes by: David G. Wagner \\ 
+$\sbullet$ Spring 2021 $\sbullet$ University of Waterloo $\sbullet$}
+\maketitle
+
+\toccontents
+\vspace{4mm}
+\textbf{Standard Notation:}
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+\begin{tabular}{ | c c | } 
+\hline
+ \tbf{Set} & \tbf{Notation} \\ 
+\hline
+ natural numbers & $\bb N = \{0, 1, 2, \dots\}$ \\ 
+\hline
+ integers & $\bb Z = \{\dots, -2, -1, 0, 1, 2, \dots\}$ \\ 
+\hline
+ rational numbers & $\bb Q$\\ 
+\hline
+ real numbers & $\bb R$\\ 
+\hline
+ complex numbers & $\bb C$\\ 
+\hline
+ integers (modulo $n$) & $\bb Z_n = \{[0], [1], [2], \dots [n-1]\}$ \\ 
+\hline
+ finite field of prime size & $\bb F_p = \bb Z_p$\\
+\hline
+\end{tabular}
+\end{center}
+\renewcommand{\arraystretch}{1}
+
+\textbf{Def} Cardinality: The size of a set $S$ is denoted by $|S|$
+
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+\section{Basic Principles of Enumeration}
+
+\textbf{Def} Cartesian Product: Choosing an element of $A$ and an element of $B$ leads to $A \times B$ possibilities
+$$A \times B = \{(a, b): a \in A \wedge b \in B\}$$
+with the cardinalities
+$$|A \times B| = |A| \cdot |B|$$
+
+\textbf{Def} Intersection: An element of $A$ and $B$
+$$A \cap B = \{c: c \in A \wedge c \in B\}$$
+
+\textbf{Def} Union: Choosing an element of $A$ or an element of $B$ leads to
+$$A \cup B = \{c: c \in A \vee c \in B\}$$
+with the cardinalities
+$$|A \cup B| = |A| + |B| - |A \cap B|$$
+\hspace*{5mm} Note: If the set is a disjoint union, that is $A \cap B = \emptyset$, then $|A \cup B| = |A| + |B|$
+
+\textbf{Def} List: Contains all elements of $S$ exactly once, in any order
+
+\textbf{Def} Permutation: A list of $\{1, 2, \dots n\}$ for some $n \in \bb N$, $\sigma : a_1, a_2, \dots a_n$ can be interpreted as the function
+$$\sigma:\{1,2,\dots n\} \to \{1,2,\dots n\}, \sigma(i)= a_i : 1 \leq i \leq n$$
+
+\textbf{Theorem 1.2}: For $n \geq 1$, an $n-$ element set contains $n(n-1)\dots (2)(1) = n!$ lists
+
+\textbf{Def} Subset: A set of $S$ containing some of the elements of $S$
+
+\textbf{Theorem 1.3}: For $n \geq 0$, an $n-$ element set contains $2^n$ subsets
+
+\textbf{Def} Partial List: A list of a subset of $S$
+
+\textbf{Theorem 1.4}: For $n, k \geq 0$, an $n-$ element set contains $n(n-1)\dots(n-k+2)(n-k+1) = \frac{n!}{(n-k)!} = k!\binom{n}{k}$ partial sets of length $k$
+
+\textbf{Theorem 1.5}: For $0 \leq k \leq n$, an $n-$ element set contains $\frac{n!}{k!(n-k)!} = \binom{n}{k}$ subsets of length $k$
+
+\textbf{Example 1.6}: $$\binom{n}{0} + \binom{n}{1} + \dots + \binom{n}{n} = 2^n$$
+
+\newpage
+\textbf{Example 1.7}: $$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$
+\hspace*{5mm} Note: $\binom{n}{k} = \binom{n}{n-k}$ and $\binom{n}{0} = \binom{n}{n} = 1$
+
+\textbf{Def} Multiset: For $n \geq 0, t \geq 1 \in \bb Z$, a sequence of $t$ elements $(n_1, n_2, \dots n_t)$ such that $n_1 + n_2 + \dots + n_t = n$
+
+\textbf{Theorem 1.9}: Let $n \geq 0, t \geq 1$, the number of $n-$element multisets is
+$$|M(n, t)| = \binom{n+t-1}{t-1} = \frac{t(n+t)!}{(n+t)t!n!}$$
+
+\textbf{Def} Surjective: For $f: A \to B$, for every $b \in B$ there exists an $a \in A$ such that $f(a) = b$
+
+\textbf{Def} Injective: For $f: A \to B$, for every $a, a' \in A$, if $f(a) = f(a')$ then $a = a'$
+
+\textbf{Def} Bijective: For $f: A \to B$, it is both surjective and injective
+$$A	\rightleftharpoons B$$
+
+\textbf{Proposition 1.11} Mutually Inverse Bijections: Let $f: A \to B, g: B \to A$ where $\forall a \in A, g(f(a)) = a$ and $\forall b \in B, f(g(b)) = b$. Then both $f, g$ are bijections, and $f(a) = b$ if and only if $g(a) = b$
+$$g = f^{-1}, f = g^{-1}$$
+
+\textbf{Theorem 1.15} Inclusion/Exclusion: Let $A_q, A_2, \dots A_m$ be finite sets, then
+$$|A_1 \cup A_2 \cup \dots \cup A_m| = \sum_{\emptyset \ne S \subseteq \{1, 2, \dots m\}} (-1)^{|S|-1}|A_S|$$
+
+\textbf{Example 1.19} Vandermonde Convolution Formula: For $m, n, k \in \bb N$
+$$\binom{n+m}{k} = \sum_{j=0}^k \binom{m}{j}\binom{n}{k-j}$$
+
+\newpage
+\section{The Idea of Generating Series}
+
+\textbf{Example 2.1} Geometric Series: The simplest infinite power series
+$$\frac{1}{1-x} = 1 + x + x^2 + \dots = \sum_{n=0}^{\infty} x^n$$
+
+\textbf{Theorem 2.2} Binomial Theorem: Let $n \in \bb N$, then
+$$(1+x)^n = \sum_{k=0}^n \binom{n}{k}x^k$$
+
+\textbf{Theorem 2.4} Binomial Series: Let $t \geq 1 \in \bb Z$, then
+$$\frac{1}{(1-x)^t} = \sum_{n=0}^\infty \binom{n+t-1}{t-1}x^n$$
+
+\textbf{Def} Weight Function: For a set $A$, the weight function is the function $w: A \to \bb N$ such that for every $n \in \bb N$, there are only finitely many elements of weight $n$, that is
+$$A_n = \omega^{-1}(n) = \{\alpha \in A: \omega(\alpha) = n\}$$
+
+\textbf{Def} Generating Series: For a set $A$ with $\omega$, the generating series of $A$ with respect to $\omega$ is
+$$A(x) = \phi_A^\omega = \sum_{\alpha \in A}^\infty x^{\omega(\alpha)}$$
+
+\textbf{Proposition 2.7} Let $A$ be a set with $\omega: A \to \bb N$ and let 
+$$\phi_A(x) = a_0 + a_1x + a_2x^2 + \dots = \sum_{n=0}^\infty a_nx^n$$
+then for every $n \in \bb N$, the number of elements of $A$ with weight $n$ is $a_n = |A_n|$
+
+\textbf{Proposition 2.8} Let $G(x) = \sum_{n=0}^\infty g_nx^n$ be a power series, then for $k \in \bb N$
+$$[x^k]G(x) = g_k$$
+
+\textbf{Lemma 2.10} Sum Lemma: Let $A, B$ be disjoint sets such that $\omega: (A \cup B) \to \bb N$, then $\omega$ is a function of $A$ and $B$ where
+$$\phi_{A \cup B}(x) = \phi_A(x) + \phi_B(x)$$
+
+\textbf{Lemma 2.11} Infinite Sum Lemma: Let $A_1, A_2, \dots$ be pairwise disjoint sets for all combinations, and let $B = \cup_{j=0}^\infty A_j$ with $\omega: B \to \bb N$, then $\omega$ is a function of $A_j$ where
+$$\phi_{B}(x) = \sum_{j=0}^\infty \phi_{A_j}(x)$$
+
+\textbf{Lemma 2.12} Product Lemma: Let $A, B$ be sets such that $\omega: A \to \bb N, \upsilon: B \to \bb N$. Define $\eta: A \times B \to \bb N$ such that $\eta(\alpha, \beta) = \omega(\alpha) + \upsilon(\beta)$, then $\eta$ is a function on $A \times B$ such that
+$$\phi^\eta_{A \times B}(x) = \phi^\omega_A(x) \cdot \phi^\upsilon_B(x)$$
+
+\textbf{Lemma 2.13} Let $A$ be a set where $\omega: A \to \bb N$ and let $A* = \cup_{k=0}^\infty A^k$ with $\omega*: A* \to \bb N$ where $A^k$ is the Cartesian product of $k$ copies of $A$, then $\omega*$ is a weight function of $A*$ if and only if there are no elements of $A$ with weight 0
+
+\textbf{Lemma 2.14} String Lemma: Let $A$ be a set where $\omega: A \to \bb N$ such that no elements of $A$ have weight 0, then
+$$\phi_{A*}(x) = \frac{1}{1-\phi_A(x)}$$
+
+\textbf{Def} Composition: A finite sequence of length $k \in \bb N$ positive integers $\gamma = (c_1, c_2, \dots c_k)$ where parts $c_i \geq 1$ with size
+$$|\gamma| = c_1 + c_2 + \dots + c_k$$
+\hspace*{5mm} Note: There is exactly one composition of length $0$, $\epsilon = ()$
+
+\textbf{Lemma 2.17} Let $P = \{1, 2, 3, \dots\}$ be the set of positive integers, then
+\begin{enumerate}[label=\alph*)]
+    \item The set of all compositions is $\mc C = P*$
+    \item The generating series $\mc C$ with respect to size is
+    $$\Phi_{\mc C}(x) = 1 + \frac{x}{1-2x} = \frac{1-x}{1-2x}$$
+    \item For each $n \in \bb N$, the number of compositions of size $n$ is
+    $$|\mc C_n| = \begin{cases}1&\text{if }n=0\\2^{n-1}&\text{if }n \geq 1   \end{cases}$$
+\end{enumerate}
+
+\newpage
+\section{Binary Strings}
+
+\tbf{Def} Binary String: A finite sequence $\sigma = b_1b_2\dots b_n$ of length $n$, in which each bit is $b_i 1 \vee b_i = 0$. A Cartesian power $\{0,1\}^n$ where a binary string of arbitrary length is an element of $\cup^\infty_{n=0}\{0, 1\}^n$\\
+\hspace*{5mm} Note: There is exactly one binary string of length $0$, $\epsilon = ()$
+
+\tbf{Def} Regular Expression: A regular expression $\sf R$ can produce a subset $\mc R \subseteq \{0, 1\}*$, or lead to a rational function $R(x)$
+\vspace{-4mm}
+\begin{itemize}
+    \item $\epsilon, 0, 1$ are regular expressions
+    \item If $\sf R, \sf S$ are regular expressions, then so is $\sf R \cup \sf S$
+    \item If $\sf R, \sf S$ are regular expressions, then so is $\sf R \sf S$, where $\sf R^k$ is $\sf R_1 \sf R_2 \dots \sf R_k$
+    \item If $\sf R$ is a regular expressions, then so is $\sf R*$
+\end{itemize}
+
+\tbf{Def} Concatenation: For binary strings $\alpha = a_1a_2\dots a_m, \beta = b_1b_2\dots b_n \in \{0, 1\}*$, their concatenation is
+$$\alpha\beta = a_1a_2\dots a_mb_1b_2 \dots b_n$$
+
+\tbf{Def} Concatenation Product: For sets of binary strings $\mc A, \mc B \subseteq \{0, 1\}*$, their concatenation product is
+$$\mc A\mc B = \{\alpha\beta : \alpha \in \mc A, \beta \in \mc B\}$$
+
+\tbf{Def} Rational Language: A subset $\mc R \subseteq \{0, 1\}^*$ of a regular expression $\sf R$ such that
+\vspace{-4mm}
+\begin{itemize}
+    \item $\epsilon$ produces $\{\epsilon\}$, $0$ produces $\{0\}$, $1$ produces $\{1\}$
+    \item If $\sf R$ produces $\mc R$ and $\sf S$ produces $\mc S$, then $\sf R \cup \sf S$ produces $\mc R \cup \mc S$
+    \item If $\sf R$ produces $\mc R$ and $\sf S$ produces $\mc S$, then $\sf R \sf S$ produces $\mc R \mc S$
+    \item If $\sf R$ produces $\mc R$, then $\sf R*$ produces $\mc R* = \cup_{k=0}^\infty \mc R^k$ where $\mc R^k$ is the concatenation product of $\mc R$
+\end{itemize}
+
+\tbf{Def} Unambiguous Expression: For a regular expression $\sf R$, it is unambiguous if each string in $\mc R$ is produced exactly once
+
+\tbf{Lemma 3.9} Unambiguous Expression: Let $\sf R, \sf S$ be unambiguous expressions producing $\mc R, \mc S$,
+\vspace{-4mm}
+\begin{itemize}
+    \item $\epsilon$, $0$, $1$ are unambiguous
+    \item $\sf R \cup \sf S$ is unambiguous if and only if $\mc R \cap \mc S = \emptyset$
+    \item $\sf R \sf S$ is unambiguous if and only if there is a bijection $\mc R \mc S \rightleftharpoons \mc R \times \mc S$, that is for every string $\alpha \in \mc R \mc S$, there is exactly one way to write $\alpha = p\sigma$ with $p \in \mc R$ and $\sigma \in \mc S$
+    \item $\sf R*$ is unambiguous if and only if each $\sf R^k$ is unambiguous and the union $\cup_{k=0}^\infty \mc R^k$ is disjoint
+\end{itemize}
+
+\tbf{Def} Rational Function: A function $R(x)$ of a regular expression $\sf R$ such that
+\vspace{-4mm}
+\begin{itemize}
+    \item $\epsilon$ leads to $1$, $0$ leads to $x$, $1$ leads to $x$
+    \item $\sf R \cup \sf S$ leads to $R(x) + S(x)$
+    \item $\sf R \sf S$ leads to $R(x) \cdot S(x)$
+    \item $\sf R*$ leads to $\frac{1}{1-R(x)}$
+\end{itemize}
+
+\tbf{Theorem 3.13} Let $\sf R$ be a regular expression producing $\mc R$ and leading to $R(x)$, if $\sf R$ is unambiguous then $R(x) = \phi_{\mc R}(x)$, the generating series for $\mc R$ with respect to length
+
+\tbf{Def} Blocks of a String: For a binary string $\sigma = b_1b_2\dots b_n$ of length $n$, a block is a nonempty maximal subsequence of consecutive equal bits, thus cannot be made longer.
+
+\tbf{Proposition 3.17} Blocks Decompositions: The regular expressions
+$$0^*(1^*10^*0)^*1^* \text{ and } 1^*(0^*01^*1)^*0^*$$
+are unambiguous expressions for $\{0, 1\}*$ that produce each binary string block by block
+
+\tbf{Def} Prefix Decomposition: A regular expression in the form $\sf A*\sf B$
+
+\tbf{Def} Postfix Decomposition: A regular expression in the form $\sf A\sf B*$
+
+\tbf{Def} Contains: For binary strings $k, \sigma \in \{0,1\}*$, $\sigma$ contains $k$ if there exists strings $\alpha, \beta$ such that $\sigma = \alpha k \beta$. Otherwise it avoids or excludes $k$
+
+\tbf{Theorem 3.26} Let $k \in \{0, 1\}*$ be a non-empty string of length $n$ with $A$ being the set of strings that avoid $k$. Let $C$ be the set of nonempty suffixes of $\gamma$ of $k$ such that $k \gamma = n k$ for some nonempty prefix $n$ of $k$. Let $C(x) = \sum_{\gamma \in C}x^{l(\gamma)}$, then
+$$A(x) = \frac{1+C(x)}{(1-2x)(1+C(x)) + x^n}$$
+
+\newpage
+\section{Recurrence Relations}
+
+\tbf{Proved} The Fibonacci sequence is
+$$f_n = \frac{5 + \sqrt{5}}{10}\left(\frac{1+\sqrt{5}}{2}\right)^n + \frac{5 - \sqrt{5}}{10}\left(\frac{1-\sqrt{5}}{2}\right)^n$$
+
+\tbf{Def} Homogeneous Linear Recurrence Relation: For an infinite sequence of complex numbers $\tbf{g} = (g_0,g_1,\dots)$ with $a_1,a_2,\dots a_d \in \bb C$ and $N \geq d$, then $\tbf g$ satisfies a homogeneous linear recurrence relation if for all $n \geq N$,
+$$g_n + a_1g_{n-1} + a_2 g_{n-2} + \dots + a_dg_{n-d} = 0$$
+\hspace*{5mm} Note: $g_0, g_1, \dots g_{N-1}$ are the initial conditions of the recurrence
+
+\tbf{Theorem 4.8} Let the sequence of complex numbers $\tbf{g} = (g_0, g_1, \dots)$ have corresponding generating series $G(x) = \sum_{n=0}^\infty g_nx^n$, then the following are equivalent
+\begin{enumerate}[label=\alph*)]
+    \item \tbf{g} satisfies a homogeneous linear recurrent relation with initial conditions $g_0, g_1, \dots g_{N-1}$
+    $$g_n + a_1g_{n-1} + \dots + a_dg_{n-d} = 0 \text{ for all }n \geq N$$
+    \item The series $G(x) = \frac{P(x)}{Q(x)}$ has
+    $$Q(x) = 1 + a_1x + a_2x^n + \dots + a_dx^d$$
+    and for all $0 \leq k \leq N-1$ with $g_n < 0$ for $n < 0$,
+    $$P(x) = b_0 + b_1x + b_2x^2 + \dots + b_{N-1} x^{N-1}$$
+\end{enumerate}
+
+\tbf{Theorem 4.12} Partial Fractions: Let $G(x) = \frac{P(x)}{Q(x)}$ be a rational function with $\deg P < \deg Q$ and the constant term of $Q(x)$ is 1, for $\lambda_1, \dots \lambda_S$ distinct nonzero complex roots with $d_1 + \dots + d_s = \deg Q$
+$$Q(x) = (1-\lambda_1 x)^{d_1}(1-\lambda_2 x)^{d_2}\dots (1-\lambda_s x)^{d_s}$$
+there are $d$ complex numbers ($C_1^{(1)}, C_1^{(2)}, \dots C_1^{(d_1)}; C_2^{(1)}, C_2^{(2)}, \dots C_2^{(d_1)}; \dots C_s^{(1)}, C_s^{(2)}, \dots C_s^{(d_1)}$) uniquely determined such that
+$$G(x) = \frac{P(x)}{Q(x)} = \sum_{i=1}^s \sum ^{d_s}_{j=1} \frac{C_i^{(j)}}{(1 - \lambda_i x)^j}$$
+
+\newpage
+\tbf{Theorem 4.14} Main Theorem: Let the sequence of complex numbers $\tbf{g} = (g_0, g_1, \dots)$ have corresponding generating series $G(x) = \sum_{n=0}^\infty g_nx^n$, assuming that Theorem 4.8 holds and $G(x) = R(x) + \frac{P(x)}{Q(x)}$ with $\deg P(x) < \deg Q(x)$ and $Q(0) = 1$, then for $\lambda_1, \dots \lambda_S$ distinct nonzero complex roots with $d_1 + \dots + d_s = \deg Q$ such that
+$$Q(x) = (1-\lambda_1 x)^{d_1}(1-\lambda_2 x)^{d_2}\dots (1-\lambda_s x)^{d_s}$$
+there are polynomials $p_i(n)$ for $1 \leq i \leq s$ with $\deg p_i(n) < d_i$ such that for all $n > \deg R(x)$
+$$g_n = p_1(n) \lambda_1^n + p_2(n) \lambda_2^n + \dots + p_s(n) \lambda_s^n$$
+
+\tbf{Theorem 4.18} Main Theorem: Let $\tbf{g} = (g_0, g_1, \dots)$ be a sequence of complex numbers, then the following are equivalent
+\begin{enumerate}[label=\alph*)]
+    \item The sequence $\tbf{g}$ satisfies a homogeneous linear recurrence relation (with initial conditions)
+    \item The sequence $\tbf{g}$ satisfies a possibly inhomogeneous linear recurrence relation (with initial conditions) in which the RHS is an eventually polynomial function
+    \item The generating series $G(x) = \sum_{n=0} g_nx^n$ is a rational function
+    \item The sequence $\tbf{g}$ is an eventually polyexp function
+\end{enumerate}
+
+\newpage
+\section{Graph Theory}
+
+\tbf{Def} Graph: A graph $G$ is a finite non-empty set $V(G)$ of vertex objects ($p$) with a set $E(G)$ of unordered pairs of distinct vertices called edges ($q$) 
+$$V(G) = \{1, 2, 3, 4, 5\} \text{ and } E(G) = \{\{1, 2\}, \{1, 3\}, \{1, 4\}, \{2, 3\}, \{2, 5\}, \{3, 4\}, \{3, 5\}, \{4, 5\}\}$$
+\hspace*{5mm} Digraph: A directed graph has ordered pairs of edges \\
+\hspace*{5mm} Multigraph: A multigraph allows non-distinct vertices in edges 
+
+\tbf{Def} Adjacent: For the incident $e = \{u, v\}$, the vertices $u$ and $v$ ($e$ joins $u$ and $v$)
+
+\tbf{Def} Neighbours: The vertices adjacent to a vertex $u$
+\vspace{-1mm}
+$$N(u)$$
+\vspace{-8mm}
+
+\tbf{Def} Planar: A graph which can be represented with no edges crossing
+
+\tbf{Def} Isomorphism: Graphs $G_1, G_2$ are isomorphic if there exists a bijection $f: V(G_1) \to f(G_2)$ such that vertices $u, v$ are adjacent in $G_1$ if and only if $f(u), f(v)$ are adjacent in $G_1$\\
+\hspace*{5mm} Isomorphic Class: All graphs isomorphic to $G$ form the isomorphism class of $G$
+
+\tbf{Def} Automorphism: The identity map on $V(G)$ is an isomorphism from $G$ to itself
+
+\tbf{Def} Degree: The number of edges incident with a vertex $v$
+\vspace{-1mm}
+$$\deg(v)$$
+\vspace{-8mm}
+
+\tbf{Theorem 4.3.1} Handshaking Lemma/Degree-Sum Formula: For any graph $G$,
+$$\sum_{v \in V(G)} \deg(v) = 2|E(G)|$$
+\vspace{-5mm}
+
+\tbf{Corollary 4.3.2}: The number of vertices of odd degree in a graph is even
+
+\tbf{Corollary 4.3.3}: The average degree of a vertex in the graph $G$ is
+$$\frac{2|E(G)|}{|V(G)|}$$
+\vspace{-5mm}
+
+\tbf{Def} $k$-Regular Graph: A graph in which every vertex has degree $k$
+
+\tbf{Def} Complete Graph: A graph in which all pairs of distinct vertices are adjacent, a complete graph with $p$ vertices is $K_p$ and ${k-1}-$Regular with $\binom{k}{2}$ edges
+
+\tbf{Def} Bipartite: A graph with a bipartition $(A, B)$ into two sets $A, B$ such that all edges join a vertex in $A$ to a vertex in $B$\\
+\hspace*{5mm} Complete Bipartite: A complete bipartite $K_{m, n}$ has all $m$ vertices in $A$ adjacent to all $n$ vertices in $B$
+
+\tbf{Def} $n-$Cube: For $n\geq 0$, the $n-$cube is the graph with the $\{0,1\}^n$ string vertices, such that two strings are adjacent if and only if they differ by exactly one position
+
+\tbf{Def} Adjacency Matrix: For a graph $G$ with vertices $v_1, v_2, \dots v_p$, the $p \times p$ matrix $A = [a_{ij}]$ where
+$$a_{ij} = \begin{cases}1, & \text{if $v_i$ and $v_j$ are adjacent}\\
+0, &\text{otherwise}\end{cases}$$
+\hspace*{5mm} Note: $A$ is a symmetric matrix with all diagonals equal to $0$
+
+\tbf{Def} Incidence Matrix: For a graph $G$ with vertices $v_1, v_2, \dots v_p$ and edges $e_1, e_2, \dots e_q$, the $p \times q$ matrix $B = [b_{ij}]$ where
+$$b_{ij} = \begin{cases}1, & \text{if $v_i$ is incident with $e_j$}\\
+0, &\text{otherwise}\end{cases}$$
+\hspace*{5mm} Note: Each column of $B$ contains exactly two 1s
+
+For the product $BB^t$, its $(i, j)^{th}$ element is
+$$\sum_{k=1}^q b_{ik}b_{jk}$$
+For $i \ne j$ this is the number of edges incident with $v_i$ and $v_j$,\\
+For $i=j$ this is the number of edges incident with $v_i$, thus $\deg(v_i)$\\
+thus
+$$BB^t = A + diag(\deg{(v_1)}, \dots, \deg{(v_p)})$$
+
+\tbf{Def} Subgraph: A graph such that its vertex set is a subset $U \subseteq V(G)$ and its edge set is the subset of edges of $G$ such that both vertices belong to $U$\\
+\hspace*{5mm} Spanning: If $V(H) = V(G)$ then $H$ is the spanning subgraph of $G$\\
+\hspace*{5mm} Proper: If $V(H) \subset V(G)$ then $H$ is a proper subgraph of $G$
+
+\tbf{Def} Walk: A $v_0,v_n-$walk of length $n$ between $v_0$ and $v_n$ is an alternating sequence of vertices and edges in $G$ such that edge $e_i = \{v_{i-1}, v_i\}$
+$$v_0e_1v_1e_2 \dots v_{n-1}e_nv_n$$
+\hspace*{5mm} Closed: A walk is closed if $v_0 = v_n$
+
+\tbf{Def} Path: A $v_0,v_n-$path is a $v_0,v_n-$walk such that all vertices are distinct (edges are often omitted as they are given from distinct vertices)
+$$v_0v_1v_2 \dots v_{n-1}v_n$$
+
+\tbf{Theorem 4.6.2} If there exists a walk in $G$ from $v_x$ to $v_y$, then there exists a path from $v_x$ to $v_y$
+
+\tbf{Corollary 4.6.3} For $x, y, z$ vertices of $G$, if there exists a path from $x$ to $y$ and from $y$ to $z$, then there exists a path from $x$ to $z$
+
+\tbf{Def} Cycle: A $n-$cycle with length $n$ is a graph $G$ with $n$ distinct vertices $v_0, v_1, \dots v_{n-1}$ and $n$ distinct edges $\{v_0, v_1\}, \{v_1, v_2\}. \dots \{v_{n-1}, v_0\}$, thus a connected graph of degree two\\
+\hspace*{5mm} Note: the smallest possible cycle is a $3-$cycle
+
+\tbf{Def} Path 2: A subgraph from deleting one edge of a cycle 
+
+\tbf{Theorem 4.6.4} If every vertex in $G$ has degree at least $2$, then $G$ contains a cycle
+
+\tbf{Def} Girth: For a graph $G$, the length of the shortest cycle $g(G)$\\
+\hspace*{5mm} Note: If $G$ does not contain a cycle, then $g(G) = \infty$
+
+\tbf{Def} Hamilton Cycle: A spanning cycle in a graph
+
+\tbf{Def} Reflexive: A relation on $S$ is reflexive if for $s \in S$, $s \approx s$
+
+\tbf{Def} Symmetric: A relation on $S$ is symmetric if for $s_1, s_2 \in S$, $s_1 \approx s_2 \to s_2 \approx s_1$
+
+\tbf{Def} Transitive: A relation on $S$ is transitive if for $s_1, s_2, s_3 \in S$, $s_1 \approx s_2 \wedge s_2 \approx s_3 \to s_1 \approx s_3$
+
+\tbf{Def} Equivalence Relation: A relation which is reflexive, symmetric, and transitive\\
+\hspace*{5mm} Note: For $v \in V(G)$, $v_i,v_j-$walk is an equivalence relation
+
+\tbf{Def} Connected: A graph $G$ is connected if $\forall x, y \in V(G)$, there is a path from $x$ to $y$
+
+\tbf{Theorem 4.8.2} For graph $G$ with $v \in V(G)$, if $\forall w \in V(G)$ there is a $v, w-$path, then $G$ is connected
+
+\tbf{Def} Component: A subgraph $C$ of $G$ such that
+\vspace{-3mm}
+\begin{itemize}
+    \item $C$ is connected
+    \item No subgraph of $G$ that properly contains $C$ is connected
+\end{itemize}
+\vspace{-1mm}
+
+\tbf{Def} Cut: Given a subset $X$ of $V(G)$, the cut induced by $X$ is the set of edges that have exactly one end in $X$
+
+\tbf{Theorem 4.8.5} A graph $G$ is not connected if and only if there exists a proper non-empty subset $X$ of $V(G)$ such that the cut induced by $X$ is empty
+
+\tbf{Def} Eulerian Circuit: A closed walk of the graph $G$ that contains every edge of $G$ exactly once
+
+\tbf{Theorem 4.9.2} For a connected graph $G$, $G$ has a Eulerian circuit if and only if every vertex has even degree
+
+\tbf{Def} Bridges: An edge $e$ of a graph $G$ is a cut-edge if $G-e$ has more components than $G$
+
+\tbf{Lemma 4.10.2} If $e = \{x, y\}$ is a bridge of a connected graph $G$, then $G-e$ has exactly two components where $x$ and $y$ are in different components
+
+\tbf{Theorem 4.10.3} An edge $e$ is a bridge of a graph $G$ if and only if it is not contained in any cycle of $G$
+
+\tbf{Corollary 4.10.4} If there are two distinct paths from vertex $u$ to vertex $v$ in a graph $G$, then $G$ contains a cycle
+
+\newpage
+\section{Trees}
+\vspace{-3mm}
+\tbf{Def} Tree: A connected graph with no cycles
+
+\tbf{Def} Forest: A graph with no cycles
+
+\tbf{Lemma 5.1.3} If $u$ and $v$ are vertices in a tree $T$, then there is a unique $u,v-$path in $T$
+
+\tbf{Lemma 5.1.4} Every edge of a tree $T$ is a bridge
+
+\tbf{Theorem 5.1.5} If $T$ is a tree, then $|E(T)| = |V(T)| - 1$
+
+\tbf{Corollary 5.1.6} If $G$ is a forest with $k$ components, then $|E(G)| = |V(G)| - k$
+
+\tbf{Def} Leaf: A vertex in a tree of degree 1
+
+\tbf{Theorem 5.1.8} A tree with at least two vertices has at least two leaves
+
+\tbf{Alternative Proof of Theorem 5.1.8} For a tree $T$, 
+\vspace{-3mm}
+$$n_1 = 2 + \sum_{i=3}^{\infty}(i-2)n_i$$
+\vspace{-8mm}
+
+\tbf{Lemma} A tree is bipartite
+
+\tbf{Def} Spanning Tree: A spanning subgraph which is also a tree
+
+\tbf{Theorem 5.2.1} A graph $G$ is connected if and only if it has a spanning tree
+
+\tbf{Corollary 5.2.2} If a graph $G$ is connected with $p$ vertices and $q-1 = p$ edges, then $G$ is a tree
+
+\tbf{Theorem 5.2.3} If $T$ is a spanning tree of $G$ and $e$ is an edge not in $T$, then $T+e$ contains one cycle $C$. And if $e'$ is an edge on $C$, then $T+e - e'$ is a spanning tree of $G$
+
+\tbf{Theorem 5.2.4} If $T$ is a spanning tree of $G$ and $e$ is an edge in $T$, then $T - e$ has 2 components. If $e'$ is in the cut induced by a component, then $T-e+e'$ is also a spanning tree of $G$
+
+\tbf{Def} Odd Cycle: A cycle on an odd number of vertices
+
+\tbf{Lemma 5.3.1} An odd cycle is not bipartite
+
+\tbf{Theorem 5.3.2} Bipartite Characterization Theorem: A graph is bipartite if and only if it has no odd cycles
+
+\tbf{Theorem 5.6.1} Prim's algorithm produces a minimum spanning tree for $G$
+
+\tbf{Prim's Algorithm for Minimum Spanning Trees (MST)} For a connected graph $G$ and a weight function $w: E(G) \to \bb R$
+\vspace{-3mm}
+\begin{enumerate}
+    \item For an arbitrary vertex $v$ in $G$, let $T$ be the tree consisting of $v$
+    \vspace{-1.5mm}
+    \item While $T$ is not spanning $G$
+    \vspace{-2mm}
+    \begin{enumerate}
+        \item Let $e = uv$ be an edge with the smallest weight in the cut induced by $V(T)$ (where $u \in V(t), v \not \in V(T))$
+        \item Add $u$ to $V(T)$ and add $e$ to $E(T)$
+    \end{enumerate}
+\end{enumerate}
+
+\newpage
+\section{Planar Graphs}
+\vspace{-4mm}
+\tbf{Def} Planar: A graph $G$ has a planar embedding (map) if it can be drawn so that its edges intersect only at their ends and no two vertices coincide
+
+\tbf{Def} Face: A connected region partitioned by the planar embedding such that it is surrounded by a boundary subgraph\\
+\hspace*{5mm} Adjacent: Adjacent faces share an edge
+
+\tbf{Def} Boundary Walk: A closed walk of the graph $G$ around the perimeter of a face $f$\\
+\hspace*{5mm} Degree: The number of edges in the boundary walk
+
+\tbf{Theorem 7.1.2} Faceshaking Lemma: For a planar embedding of a connected graph $G$ with faces $f_1, \dots f_s$
+\vspace{-4mm}
+$$\sum_{i=1}^s \deg(f_i) = 2|E(G)|$$
+\vspace{-6mm}
+
+\tbf{Corollary 7.1.3} For a planar embedding of a connected graph $G$ with $f$ faces, the average degree of a face is $\frac{2|E(G)|}{f}$
+
+\tbf{Theorem Lecture 7-1} Jordan Curve Theorem: Every planar embedding of a cycle separates the plane into two parts
+
+\tbf{Lemma Lecture 7-1} In a planar embedding, an edge $e$ is a bridge if and only if the two sides of $e$ are in the same face
+
+\tbf{Theorem 7.2.1} Euler's Formula: For a connected graph $G$ with $p$ vertices and $q$ edges, if $G$ has a planar embedding with $f$ faces, then
+\vspace{-2mm}
+$$p-q+f=2$$
+\vspace{-8mm}
+
+\tbf{Theorem 7.3.1} A graph is planar if and only if it can be drawn on the surface of a sphere
+
+\tbf{Def} Stereographic Projection: A drawing on a plane converted to be on a sphere. For a sphere that has point $A$ tangent to the plane with antipodal point $B$, let the vertex $x'$ on the sphere be the unique image of the point $x$ that lines between $x$ and $B$
+
+\tbf{Def} Platonic Solids: A geometric solid such that all faces have the same degree and all vertices have the same degree\\
+\hspace*{5mm} Note: These are the tetrahedron, cube, octahedron, dodecahedron, and icosahedron
+
+\tbf{Def} Platonic: A graph which admits a planar embedding in which all vertices have the same degree $d \geq 3$ and all faces have the same degree $d^* \geq 3$
+
+\tbf{Theorem 7.4.1} There are exactly five platonic graphs
+
+\tbf{Lemma 7.4.2} Let $G$ be a planar embedding with $p$ vertices, $q$ edges, $s$ faces in which each vertex has degree $d \geq 3$ and each face has degree $d^* \geq 3$. Then $(d, d^*)$ is one of 4 pairs
+\vspace{-4mm}
+$$\{(3,3),(3,4),(4,3),(3,5),(5,3)\}$$
+\vspace{-7mm}
+
+\tbf{Lemma 7.4.3} If $G$ is a platonic graph with $p$ vertices, $q$ edges and $f$ faces where each vertex has degree $d$ and each face degree $d^*$, then $p = 2\frac{q}{d}, f = 2\frac{q}{d^*}$ and
+\vspace{-2mm}
+$$q = \frac{2dd^*}{2d+2d^* - dd^*}$$
+\vspace{-7mm}
+
+\tbf{Lemma 7.5.1} If $G$ contains a cycle, then in a planar embedding of $G$ the boundary of each face contains a cycle
+
+\tbf{Lemma 7.5.2} Let $G$ be a planar embedding with $p$ vertices and $q$ edges if each face of $G$ has degree at least $d^*$ then $(d^*-2)q \leq d^*(p-2)$
+
+\tbf{Theorem 7.5.3} In a planar graph $G$ with $p \geq 3$ vertices and $q$ edges,
+\vspace{-2mm}
+$$q \leq 3p-6$$
+\vspace{-5mm}
+
+\tbf{Corollary 7.5.4} $K_5$ is not planar
+
+\tbf{Corollary 7.5.5} A planar graph has a vertex of degree at most five
+
+\tbf{Theorem 7.5.6} In a bipartite planar graph $G$ with $p \geq 3$ vertices and $q$ edges,
+\vspace{-2mm}
+$$q \leq 2p-4$$
+\vspace{-8mm}
+
+\tbf{Lemma 7.5.7} $K_{3,3}$ is not planar
+
+\tbf{Def} Edge Subdivision: An operation that builds paths of size $m > 1$ to replace each edge, such that $m-1$ new vertices and edges are created for each path (does not change planarity)
+
+\tbf{Theorem 7.6.1} Kuratowski's Theorem: A graph is not planar if and only if it has a subgraph that is an edge subdivision of $K_5$ or $K_{3,3}$
+
+\tbf{Def} $k$-Colouring: A function from $V(G)$ to a set of $k$ colours so that adjacent vertices have different colours\\
+\hspace*{8mm} Note: If such a function exists it is $k$-colourable
+
+\tbf{Theorem 7.7.2} A graph is 2-colourable if and only if it is bipartite
+
+\tbf{Theorem 7.7.3} $K_n$ is $n$-colourable and not $k$-colourable for any $k < n$
+
+\tbf{Theorem 7.7.4} Every planar graph is 6-colourable
+
+\tbf{Def} Edge-Contraction: For an edge $e = \{x, y\}$ in $G$, the graph $G / e$ from contracting $e$ for $G$ has the vertex set $V(G) \setminus \{x,y\} \cup \{z\}$ and the edge set
+\vspace{-3mm}
+$$\{\{u, v\} \in E(G) : \{u,v\} \cap \{x, y\} = \emptyset\} \cup \{\{u,z\}:u \not \in \{x,y\},\{u,w\} \in E(G) \text{ for some } w \in \{x, y\}\}$$
+\vspace{-5mm}
+
+\tbf{Theorem 7.7.6} Every planar graph is 5-colourable
+
+\tbf{Theorem 7.7.7} Every planar graph is 4-colourable
+
+\tbf{Def} Dual: For a planar embedding $G$, $G^*$ is the planar embedding such that $G^*$ has one vertex for each face of $G$ and two vertices of $G^*$ are adjacent when the faces of $G$ have an edge in common.\\
+\hspace*{5mm} Note: $(G*)* = G$, since face of degree $k$ in $G$ becomes a vertex of degree $k$ in $G^*$ and vice versa\\
+\hspace*{5mm} Note: A bridge in $G$ gives a loop in $G^*$\\
+\hspace*{5mm} Note: Multiple edges between faces in $G$ give a multigraph $G^*$
+
+
+\newpage
+\section{Matchings}
+
+\tbf{Def} Matching: A set of edges $M$ for a graph $G$ such that every vertex has degree at most 1, $M$ saturates every vertex which is incident with an edge in $M$\\
+\hspace*{5mm} Maximum: The largest possible matching for $G$\\
+\hspace*{5mm} Maximal: A matching such that any added edges would invalidate the matching\\
+\hspace*{5mm} Perfect: A matching such that every vertex is saturated, that is $|M| = \frac{p}{2}$
+
+\tbf{Def} Alternating Path: With respect to a matching $M$, a path $v_0v_1\dots v_n$ of $G$ such that $\{v_i,v_{i+1}\} \in M$ if $i$ is even and $\{v_i, v_{i+1}\} \not \in M$ if $i$ is odd, or\\
+$\{v_i,v_{i+1}\} \not \in M$ if $i$ is even and $\{v_i, v_{i+1}\} \in M$ if $i$ is odd
+
+\tbf{Def} Augmenting Path: With respect to a matching $M$, an alternating path joining two distinct vertices which are not saturated by $M$
+
+\tbf{Lemma 8.1.1} If $M$ contains an augmenting path, then it is not a maximum matching
+
+\tbf{Def} Cover: A set of $C$ vertices for a graph $G$ such that every edge of $G$ has at least one end in $C$
+
+\tbf{Lemma 8.2.1} If $M$ is a matching of $G$ and $C$ is a cover of $G$, then $|M| \leq |C|$
+
+\tbf{Lemma 8.2.2} If $M$ is a matching of $G$ and $C$ is a cover of $G$, if $|M| = |C|$, then $M$ is a maximum matching and $C$ is a minimum cover
+
+\tbf{Theorem 8.3.1} Konig's Theorem: In a bipartite graph, the maximum size of a matching is the minimum size of a cover
+
+\tbf{XY Construction} For an $A, B$ bipartition of $G$ with matching $M$, let $X_0$ be the set of vertices in $A$ not saturated by $M$ and let $v \in Z$ be the set of vertices in $G$ joined to a vertex in $X_0$ by alternating path $P(v)$. With $X =  A \cap Z$ and $Y = B \cap Z$, it follows that
+\vspace{-4mm}
+\begin{itemize}
+    \item If $v \in X$, then $P(v)$ is even length and its last edge is in $M$
+    \vspace{-2mm}
+    \item If $v \in Y$, then $P(v)$ is odd length and its last edge is not in $M$
+    \vspace{-2mm}
+    \item If $w$ is a vertex of $P(v)$ from $X_0$ to $v \in Z$, then $w \in Z$
+\end{itemize}
+\vspace{-3mm}
+
+\tbf{Lemma 8.3.2} For an $A, B$ bipartition of $G$ with matching $M$, and $X, Y$ as defined above,
+\vspace{-9mm}
+\begin{enumerate}[label=(\alph*)]
+    \item There is no edge of $G$ from $X$ to $B \setminus Y$
+    \vspace{-2mm}
+    \item $C = Y \cup (A \setminus X)$ is a cover of $G$
+    \vspace{-2mm}
+    \item There is no edge of $M$ from $Y$ to $A \setminus X$
+    \vspace{-2mm}
+    \item $|M| = |C| - |U|$ where $U$ is the set of unsaturated vertices in $Y$
+    \vspace{-2mm}
+    \item There is an augmenting path to each vertex in $U$
+\end{enumerate}
+\vspace{-3mm}
+
+\tbf{Matching Algorithm} For an $A, B$ bipartition of $G$ with matching $M$, and $X, Y$ as defined above,
+\vspace{-4mm}
+\begin{enumerate}[label=(Step \arabic*)]
+    \item If there is an unsaturated vertex $v \in Y$, construct a larger matching $M'$ with augmenting path $P(v)$ until every vertex in $Y$ is saturated
+    \vspace{-2mm}
+    \item $M$ is a maximal matching, and $C = Y \cup (A \setminus X)$ is a minimum cover 
+\end{enumerate}
+\vspace{-3mm}
+
+\newpage
+\tbf{Bipartite Matching Algorithm} For an $A, B$ bipartition of $G$ with matching $M$,
+\vspace{-4mm}
+\begin{enumerate}[label=(Step \arabic*)]
+    \item Let $\hat{X} = \{v \in A : v \text{ is unsaturated}\}$, $\hat{Y} = \emptyset$, and let pr$(v)$ be undefined for $v \in V(G)$
+    \vspace{-6mm}
+    \item For $v \in B \setminus \hat{Y}$ such that there exists and edge $\{u,v\}$ where $u \in \hat{X}$, add $v$ to $\hat{Y}$ and let pr$(v) = u$
+    \vspace{-1mm}
+    \item If no vertices were added, return the maximum matching and minimum cover $C = \hat{Y} \cup (A \setminus \hat{X})$
+    \vspace{-1mm}
+    \item If an unsaturated vertex $v$ was added to $\hat{Y}$, use pr to trace an augmenting path from $v$ to an unsaturated element of $\hat{X}$, producing a larger matching $M'$ [Step 1]
+    \vspace{-1mm}
+    \item Otherwise, for each vertex $v \in A \setminus \hat{X}$ such that $\{u,v\} \in M$ and $u \in \hat{Y}$, add $v$ to $\hat{X}$ and set pr$(v) = u$. [Step 2]
+\end{enumerate}
+\vspace{-3mm}
+
+\tbf{Def} Neighbour Set: For some graph $G$ with $D \subseteq G$, the neighbour set $N(D)$ is the set of vertices adjacent to some vertex in $D$, that is
+$$N(D) = \{v \in V(G) : \text{ there exists }u \in D \text{ with } \{u,v\}\in E(G)\}$$
+
+\tbf{Theorem 8.4.1} Hall's Theorem: A bipartite graph $G$ with bipartition $A, B$ has a matching saturating every vertex in $A$ if and only if every subset $D$ of $A$ satisfies
+$$|N(D)| \geq |D|$$
+
+\tbf{Corollary 8.6.1}  A bipartite graph $G$ with bipartition $A, B$ has a perfect matching if and only if $|A| = |B|$ and every subset $D$ of $A$ satisfies
+$$|N(D)| \geq |D|$$
+
+\tbf{Theorem 8.6.2} If $G$ is a $k$-regular bipartite graph with $k \geq 1$, then $G$ has a perfect matching \\
+\hspace*{5mm} Note: This holds if $G$ contains multiple edges
+
+\tbf{Corollary Lecture 8-6} The edges of a $k$-regular graph can be partitioned into $k$ perfect matching
+
+
+
+\end{document}
